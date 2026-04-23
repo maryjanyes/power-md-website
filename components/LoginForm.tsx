@@ -1,6 +1,6 @@
 'use client';
 
-import { login } from "@/app/api/server-actions/user.actions";
+import { login } from "@/api/server-actions/user.actions";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
