@@ -3,7 +3,7 @@
 import { prisma } from '@/lib/prisma';
 import { askOpenAILLM, LLMTransformedOutput } from './llm.actions';
 import { insightPostAnalysisStatus, insightPostStatus } from '../constants/statuses';
-import { LifeInsightAnalysisRecordCreateInput, LifeInsightPostCreateInput } from '@/app/generated/prisma/models';
+import { LifeInsightAnalysisRecordCreateInput, LifeInsightPostCreateInput } from '@/db/generated/prisma/models';
 
 export async function getLifeInsights(userId: number) {
   const data = await prisma.lifeInsightPost.findMany({

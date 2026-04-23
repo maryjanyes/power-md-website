@@ -1,4 +1,4 @@
-import { LifeInsightPost } from "@/app/generated/prisma/client";
+import { LifeInsightPost } from "@/db/generated/prisma/client";
 import LifeInsightListItem from "./LifeInsightListItem";
 
 const LifeInsightsList = ({ listData }: { listData: LifeInsightPost[] }) => {

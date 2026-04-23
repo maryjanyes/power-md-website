@@ -16,6 +16,11 @@ const PostLifeInsightForm = ({ refetchInsights }: { refetchInsights: any }) => {
             situation_overview: "",
         },
     });
+
+    const onCancelDialog = () => {
+        const dialog = document.getElementById('post_new_life_insight_dialog');
+        (dialog as any)?.close();
+    };
    
     const onSubmit = async (values: any) => {
         try {
@@ -27,8 +32,7 @@ const PostLifeInsightForm = ({ refetchInsights }: { refetchInsights: any }) => {
             };
             await postLifeInsight(newPostData);
             reset();
-            const dialog = document.getElementById('post_new_life_insight_dialog');
-            (dialog as any)?.close();
+            onCancelDialog();
             refetchInsights();
             setIsPostSubmitted(false);
         } catch (e) {
@@ -83,8 +87,7 @@ const PostLifeInsightForm = ({ refetchInsights }: { refetchInsights: any }) => {
                         </button>
                         <button
                             type="button"
-                            command="close"
-                            commandfor="post_new_life_insight_dialog"
+                            onClick={onCancelDialog}
                             className="cursor-pointer w-full flex justify-center py-1.5 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-amber-400 hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
                             Cancel
                         </button>
