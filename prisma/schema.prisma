@@ -1,0 +1,42 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../db/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User { 
+  id    Int     @id @default(autoincrement()) 
+  email String  @unique
+  password     String
+  name  String?
+  life_insights_posts LifeInsightPost[]
+}
+
+model LifeInsightPost { 
+  id        Int     @id @default(autoincrement()) 
+  situation_overview     String
+  final_decision     String
+  other_content   String?
+  status  String
+  publisher    User    @relation(fields: [publisherId], references: [id])
+  publisherId    Int
+}
+
+model LifeInsightAnalysisRecord {
+  id        Int     @id @default(autoincrement())
+  analysis_error_reason     String?
+  analysis_content     String
+  analysis_category    String
+  missed_alternatives    Json
+  cognitive_distortions_list    Json
+  status  String
+  original_post_id    Int
+}
