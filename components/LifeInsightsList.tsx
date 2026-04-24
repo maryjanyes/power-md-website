@@ -5,7 +5,7 @@ const LifeInsightsList = ({ listData }: { listData: LifeInsightPost[] }) => {
     return (
         <ul
             role="list"
-            className="flex flex-col gap-2 divide-y divide-x divide-gray-400 shadow-sm rounded-xl"
+            className="flex flex-col gap-2 divide-y divide-x divide-gray-400 shadow-sm rounded-xl max-h-150 overflow-y-scroll"
         >
             {listData.map((insight) => (
                 <LifeInsightListItem {...insight} key={insight.id} />
