@@ -1,20 +1,13 @@
-'use client';
+import HeroSection from '@/lib/components/home/HeroSection';
+import CategoryShowcase from '@/lib/components/home/CategoryShowcase';
+import FeaturesStrip from '@/lib/components/home/FeaturesStrip';
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-
-export default function Index() {
-  const router = useRouter();
-  
-  useEffect(() => {
-    let user: any = localStorage.getItem("user");
-    user = user && JSON.parse(user);
-
-    if (!!user) {
-      router.replace("/view-insights");
-      return;
-    }
-
-    router.replace("/auth");
-  }, []);
+export default function Home() {
+  return (
+    <div>
+      <HeroSection />
+      <FeaturesStrip />
+      <CategoryShowcase />
+    </div>
+  );
 }

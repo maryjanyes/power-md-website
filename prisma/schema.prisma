@@ -13,30 +13,85 @@ datasource db {
 }
 
 model User { 
-  id    Int     @id @default(autoincrement()) 
-  email String  @unique
+  id    Int     @id @default(autoincrement())
+  email     String     @unique
   password     String
-  name  String?
-  life_insights_posts LifeInsightPost[]
+  full_name     String
+  phone     String?
+  home_address     String?
+  country     String?
+  city     String?
+  zip_code     String?
+  cart_orders     CartOrder[]
 }
 
-model LifeInsightPost { 
-  id        Int     @id @default(autoincrement()) 
-  situation_overview     String
-  final_decision     String
-  other_content   String?
-  status  String
-  publisher    User    @relation(fields: [publisherId], references: [id])
-  publisherId    Int
+model CartOrderShipping {
+  id    Int     @id @default(autoincrement())
+  full_name     String
+  phone     String
+  home_address     String
+  zip_code     String
+  country     String
+  city     String
+  cart_order     CartOrder?
 }
 
-model LifeInsightAnalysisRecord {
-  id        Int     @id @default(autoincrement())
-  analysis_error_reason     String?
-  analysis_content     String
-  analysis_category    String
-  missed_alternatives    Json
-  cognitive_distortions_list    Json
-  status  String
-  original_post_id    Int
+model CartOrder {
+  id     Int     @id @default(autoincrement())
+  contact_user_id     Int?
+  contact_user     User?     @relation(fields: [contact_user_id], references: [id])
+  contact_shipping_id     Int?    @unique
+  contact_shipping     CartOrderShipping?     @relation(fields: [contact_shipping_id], references: [id]) 
+  cart_order_items      CartOrderItem[]
+}
+
+model CartOrderItem { 
+  id     Int     @id @default(autoincrement())
+  product_id     Int
+  product     ProductItem     @relation(fields: [product_id], references: [id]) 
+  cart_order_id     Int
+  cart_order     CartOrder     @relation(fields: [cart_order_id], references: [id]) 
+  quantity     Int
+}
+
+model ProductItemCategory {
+  id    Int     @id @default(autoincrement()) 
+  name     String
+  product_items   ProductItem[]  
+}
+
+model ProductFav {
+  id    Int     @id @default(autoincrement())
+  date      DateTime @default(now())
+  product_id     Int
+}
+
+model ProductItem {
+  id    Int     @id @default(autoincrement()) 
+  name     String
+  voltage     Int
+  starting_current_a     Int
+  capacity_ah     Int
+  cycle_life     Int
+  weight_kg     String
+  warranty_years     String
+  dimensions     String
+  price     Int
+  polarity     String
+  production_country     String
+  brand     String
+  terminal_category_id     Int
+  terminal_category     ProductItemCategory     @relation(fields: [terminal_category_id], references: [id]) 
+  terminal_cover_type     String
+  image_url     String?
+  in_stock     Boolean     @default(false)
+  cart_order_items     CartOrderItem[]
+}
+
+model ProductItemFeature {
+  id    Int     @id @default(autoincrement()) 
+}
+
+model ProductItemApplication {
+  id    Int     @id @default(autoincrement()) 
 }

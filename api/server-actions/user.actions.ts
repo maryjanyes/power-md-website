@@ -1,5 +1,5 @@
 'use server';
--
+
 import { prisma } from '@/lib/prisma';
 
 export async function login(userData: { email: string, password?: string }) {
@@ -15,8 +15,5 @@ export async function login(userData: { email: string, password?: string }) {
     throw new Error("Incorrect credentials"); 
   }
 
-  return {
-    email: user.email,
-    name: user.name,
-  };
+  return user;
 }

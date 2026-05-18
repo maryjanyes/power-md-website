@@ -1,0 +1,132 @@
+/* eslint-disable @next/next/no-img-element */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+'use client';
+
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/lib/components/ui/sheet";
+import { Button } from "@/lib/components/ui/button";
+import { Minus, Plus, Trash2, ShoppingCart, Weight, ArrowRight, Link } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useContext } from "react";
+import { CartContext } from "@/lib/context/CartContext";
+import { ProductContext } from "@/lib/context/ProductContext";
+
+type Props = {
+  onOpenChange: (open: boolean) => void,
+  open: boolean,
+}
+
+const ButtonComponent: any = Button;
+const SheetContentComponent: any = SheetContent;
+const SheetTitleComponent: any = SheetTitle;
+
+export default function CartDrawer({ open, onOpenChange }: Props) {
+  const { rawProducts } = useContext(ProductContext);
+  const { cartItems, updateCardItemQuantity, removeCartItem } = useContext(CartContext);
+
+  const getProduct = (productId: number) => {
+    return rawProducts.find((p) => p.id === productId);
+  };
+
+  return (
+    <Sheet open={open} onOpenChange={onOpenChange}>
+      <SheetContentComponent className="w-full sm:max-w-lg bg-background border-l border-border p-0 flex flex-col">
+        <SheetHeader className="px-6 pt-6 pb-4 border-b border-border">
+          <SheetTitleComponent className="font-heading text-xl flex items-center gap-3 text-foreground">
+            <ShoppingCart className="w-5 h-5 text-primary" />
+            CHARGE RESERVOIR
+            <span className="text-xs font-mono text-muted-foreground ml-auto">
+              {cartItems.length} {cartItems.length === 1 ? 'UNIT' : 'UNITS'}
+            </span>
+          </SheetTitleComponent>
+        </SheetHeader>
+
+        <div className="flex-1 overflow-y-auto px-6 py-4">
+          {cartItems.length === 0 ? (
+            <div className="flex flex-col items-center justify-center h-full text-muted-foreground">
+              <ShoppingCart className="w-12 h-12 mb-4 opacity-30" />
+              <p className="font-mono text-sm">RESERVOIR EMPTY</p>
+            </div>
+          ) : (
+            <AnimatePresence>
+              {cartItems.map(item => {
+                const product = getProduct(item.product_id);
+                  
+                return !!product && (
+                  <motion.div
+                    key={item.product_id}
+                    layout
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    className="flex gap-4 py-4 border-b border-border/50 last:border-0"
+                  >
+                    <div className="w-16 h-16 rounded-lg bg-secondary overflow-hidden flex-shrink-0">
+                      {product?.image_url && (
+                        <img src={product?.image_url} alt={item.product_name} className="w-full h-full object-cover" />
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-heading font-semibold truncate text-foreground">{item.product_name}</p>
+                      <p className="text-xs font-mono text-muted-foreground mt-0.5">
+                        {product?.capacity_ah} · {product.voltage}V · {product.capacity_ah}Ah
+                      </p>
+                      <div className="flex items-center justify-between mt-2">
+                        <div className="flex items-center gap-1">
+                          <button
+                            onClick={() => updateCardItemQuantity(item.product_id, item.quantity - 1)}
+                            className="w-7 h-7 flex items-center justify-center bg-secondary rounded hover:bg-accent transition-colors haptic-btn"
+                          >
+                            <Minus className="w-3 h-3" />
+                          </button>
+                          <span className="w-8 text-center text-sm font-mono">{item.quantity}</span>
+                          <button
+                            onClick={() => updateCardItemQuantity(item.product_id, item.quantity + 1)}
+                            className="w-7 h-7 flex items-center justify-center bg-secondary rounded hover:bg-accent transition-colors haptic-btn"
+                          >
+                            <Plus className="w-3 h-3" />
+                          </button>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-sm font-mono text-primary font-semibold">
+                            ${(item.price * item.quantity).toFixed(2)}
+                          </span>
+                          <button
+                            onClick={() => removeCartItem(item.product_id)}
+                            className="p-1 hover:text-destructive transition-colors"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                )
+              })}
+            </AnimatePresence>
+          )}
+        </div>
+
+        {cartItems.length > 0 && (
+          <div className="px-6 py-4 border-t border-border bg-card/50 space-y-3">
+            <div className="flex items-center justify-between text-sm font-mono">
+              <span className="text-muted-foreground flex items-center gap-2">
+                <Weight className="w-4 h-4" /> TOTAL WEIGHT
+              </span>
+              <span>{cartItems.reduce((total, item) => total += item.price, 0)} kg</span>
+            </div>
+            <div className="flex items-center justify-between font-heading text-lg">
+              <span className="text-muted-foreground">TOTAL</span>
+              <span className="text-primary font-bold">${cartItems.reduce((total, item) => total += item.price, 0)}</span>
+            </div>
+            <Link to="/checkout" onClick={() => onOpenChange(false)}>
+              <ButtonComponent className="w-full h-12 bg-primary text-primary-foreground font-heading font-bold tracking-wider text-sm haptic-btn hover:bg-primary/90 gap-2 mt-2">
+                INITIATE CHECKOUT
+                <ArrowRight className="w-4 h-4" />
+              </ButtonComponent>
+            </Link>
+          </div>
+        )}
+      </SheetContentComponent>
+    </Sheet>
+  );
+}
