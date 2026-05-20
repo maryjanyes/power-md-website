@@ -1,6 +1,21 @@
 import { User } from '@/db/generated/prisma/client';
 import { prisma } from '@/lib/prisma';
 import { CartOrderPayload } from '@/lib/types/cart.types';
+import Nodemailer from 'nodemailer';
+
+const getTransportInstance = () => {
+  const transportParams = {
+    host: process.env.SMTP_GMAIL_HOSTNAME,
+    port: 587,
+    auth: {
+      user: process.env.SMTP_GMAIL_USERNAME,
+      pass: process.env.SMTP_GMAIL_PASSWORD,
+    },
+  };
+  const transportInstance = Nodemailer.createTransport(transportParams);
+
+  return transportInstance;
+};
 
 export async function createNewCartOrder(cartOrderPayload: CartOrderPayload, user?: User) {
   let shippingContactId = null;
@@ -36,6 +51,14 @@ export async function createNewCartOrder(cartOrderPayload: CartOrderPayload, use
   const newCartOrderItems = await prisma.cartOrderItem.createMany({
     data: cartOrderItemsToAdd,
   });
+  const transport = getTransportInstance();
+  const emailParams = {
+    from: `"Power.UKR" <power_ukr.support@gmail.com>`,
+    to: user?.email || shippingContactInfo.email,
+    subject: `Нове замовлення #(${newCartOrder.id})`,
+    html: `<div><p>Ваше замовлення відправлено в обробку. Чекайте на дзвінок менеджера.</p></div>`
+  }
+  await transport.sendMail(emailParams);
 
   return { newCartOrder, newCartOrderItems };
 }

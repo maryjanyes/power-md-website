@@ -1,5 +1,4 @@
 /* eslint-disable @next/next/no-img-element */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useContext, useState } from 'react';
 import { Button } from "@/lib/components/ui/button";
 import { Badge } from "@/lib/components/ui/badge";
@@ -11,7 +10,6 @@ import Link from 'next/link';
 import { useProducts } from '@/lib/hooks/useProducts';
 import { SpecCard } from '@/lib/components/products/SpecCard';
 import { chemistryColors } from '@/api/constants/colors';
-import { useProductFeatures } from '@/lib/hooks/useProductFeatures';
 import { CartContext } from '@/lib/context/CartContext';
 
 const ButtonComponent: any = Button;
@@ -19,8 +17,9 @@ const ButtonComponent: any = Button;
 export default function ProductDetailPage() {
   const { addCartItem } = useContext(CartContext);
   const productId = Number(window.location.pathname.split('/product/')[1]);
-  const { isRawProductsLoading, productById } = useProducts(productId);
-  const { productFeatureItems } = useProductFeatures(productId);
+  const { productById } = useProducts({
+    productId,
+  });
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
 
@@ -33,6 +32,7 @@ export default function ProductDetailPage() {
       product_id: productById.id,
       product_name: productById.name,
       price: productById.price,
+      weight: productById.weight_kg,
       quantity,
     });
   
@@ -41,7 +41,7 @@ export default function ProductDetailPage() {
     setTimeout(() => setAdded(false), 10000);
   };
 
-  if (isRawProductsLoading) {
+  if (!productById) {
     return (
       <div className="min-h-screen pt-28 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12">
@@ -115,8 +115,8 @@ export default function ProductDetailPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
           >
-            <Badge variant="outline" className={`text-xs font-mono mb-4 ${(chemistryColors as any)[productById.terminal_akb_type] || ''}`}>
-              {productById.terminal_akb_type}
+            <Badge variant="outline" className={`text-xs font-mono mb-4 ${(chemistryColors as any)[productById.terminal_cover_type] || ''}`}>
+              {productById.terminal_cover_type}
             </Badge>
             <h1 className="font-heading font-bold text-2xl sm:text-3xl md:text-4xl tracking-tight mb-4">{productById.name}</h1>
             <p className="font-mono text-sm text-muted-foreground leading-relaxed mb-8">
@@ -135,20 +135,19 @@ export default function ProductDetailPage() {
               </p>
             )}
 
-            {/* Features */}
-            {productFeatureItems?.length > 0 && (
+            {/* {productsFeatured?.length > 0 && (
               <div className="mb-8">
                 <p className="text-xs font-mono text-muted-foreground/60 tracking-wider mb-3">KEY FEATURES</p>
                 <div className="space-y-2">
-                  {productFeatureItems.map((f, i) => (
+                  {productsFeatured.map((product, i) => (
                     <div key={i} className="flex items-start gap-2">
                       <Check className="w-3.5 h-3.5 text-primary mt-0.5 shrink-0" />
-                      <span className="text-sm font-mono text-muted-foreground">{f}</span>
+                      <span className="text-sm font-mono text-muted-foreground">{product.}</span>
                     </div>
                   ))}
                 </div>
               </div>
-            )}
+            )} */}
 
             {/* Applications */}
             {/* {productById.applications?.length > 0 && (
@@ -162,7 +161,6 @@ export default function ProductDetailPage() {
               </div>
             )} */}
 
-            {/* Price */}
             <div className="mb-6">
               <p className="font-heading font-bold text-3xl text-primary">${productById.price}</p>
               {productById.in_stock !== false && (
@@ -175,7 +173,6 @@ export default function ProductDetailPage() {
         </div>
       </div>
 
-      {/* Sticky bottom bar */}
       <div className="fixed bottom-0 left-0 right-0 z-40 bg-background/90 backdrop-blur-xl border-t border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between gap-4">
           <div className="hidden sm:block">

@@ -10,9 +10,9 @@ export default function Footer() {
           <div>
             <Link to="/" className="flex items-center gap-2 mb-4">
               <Zap className="w-5 h-5 text-primary" />
-              <span className="font-heading font-bold text-lg tracking-tight">
+              {/* <span className="font-heading font-bold text-lg tracking-tight">
                 IONIC<span className="text-primary">FLUX</span>
-              </span>
+              </span> */}
             </Link>
             <p className="text-sm text-muted-foreground font-mono leading-relaxed">
               Рішення для накопичення енергії нового покоління. Точно розроблені акумулятори для будь-якого застосування.

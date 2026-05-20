@@ -25,17 +25,17 @@ export const useProducts = (params: Params) => {
     const filteredProducts = useMemo(() => {
         let items = [...rawProducts];
 
-        if (productFilters.brand) {
+        if (productFilters.brand?.length > 0) {
             items = items.filter((item) => productFilters.brand.includes(item.brand));
         }
 
-        if (productFilters.capacity_ah) {
+        if (productFilters.capacity_ah?.length > 0) {
             items = items.filter((item) => productFilters.capacity_ah.includes(item.capacity_ah));
         }
 
-        if (productFilters.price_range) {
+        if (productFilters.price_range?.min && productFilters.price_range?.max) {
             items = items.filter((item) =>
-                item.price > (productFilters.price_range?.min || 0) && item.price < (productFilters.price_range?.max || 1000)
+                item.price > (productFilters.price_range.min as number) && item.price < (productFilters.price_range?.max as number)
             );
         }
 

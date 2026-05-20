@@ -1,7 +1,7 @@
 'use server';
 
 import { prisma } from '@/lib/prisma';
-import { ProductItemCreateInput } from '@/db/generated/prisma/models';
+import { ProductItemCategoryCreateInput, ProductItemCreateInput } from '@/db/generated/prisma/models';
 
 export async function getProducts() {
   const data = await prisma.productItem.findMany();
@@ -25,6 +25,12 @@ export async function getProductDailyFavourites() {
   return data;
 }
 
+export async function getProductFeatured() {
+  const data = await prisma.productItemFeatured.findMany();
+
+  return data;
+}
+
 export async function getProductById(productId: number) {
   const data = await prisma.productItem.findMany({
     where: {
@@ -38,6 +44,14 @@ export async function getProductById(productId: number) {
 export async function insertProduct(productData: ProductItemCreateInput) {
   const response = await prisma.productItem.create({
     data: productData,
+  });
+
+  return response;
+}
+
+export async function insertProductCategory(productCategoryData: ProductItemCategoryCreateInput) {
+  const response = await prisma.productItemCategory.create({
+    data: productCategoryData,
   });
 
   return response;

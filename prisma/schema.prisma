@@ -63,7 +63,8 @@ model ProductItemCategory {
 model ProductFav {
   id    Int     @id @default(autoincrement())
   date      DateTime @default(now())
-  product_id     Int
+  product_item_id     Int
+  product_item ProductItem     @relation(fields: [product_item_id], references: [id]) 
 }
 
 model ProductItem {
@@ -84,14 +85,14 @@ model ProductItem {
   terminal_category     ProductItemCategory     @relation(fields: [terminal_category_id], references: [id]) 
   terminal_cover_type     String
   image_url     String?
-  in_stock     Boolean     @default(false)
+  in_stock     Boolean     @default(true)
   cart_order_items     CartOrderItem[]
+  product_items_featured     ProductItemFeatured[]
+  product_items_favs     ProductFav[]
 }
 
-model ProductItemFeature {
-  id    Int     @id @default(autoincrement()) 
-}
-
-model ProductItemApplication {
-  id    Int     @id @default(autoincrement()) 
+model ProductItemFeatured {
+  id    Int     @id @default(autoincrement())
+  product_item_id     Int
+  product_item     ProductItem     @relation(fields: [product_item_id], references: [id]) 
 }

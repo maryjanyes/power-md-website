@@ -14,6 +14,7 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     "tailwind.config.js"
   ]),
+  { rules: { "@typescript-eslint/no-explicit-any": "off" } }
 ]);
 
 export default eslintConfig;

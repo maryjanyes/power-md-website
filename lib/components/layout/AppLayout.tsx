@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/set-state-in-effect */
 'use client';
 
@@ -10,7 +11,8 @@ import { CartProvider } from '@/lib/context/CartContext';
 import { CartOrderItem } from '@/lib/types/cart.types';
 import { ProductFilters, ProductProvider } from '@/lib/context/ProductContext';
 import { ProductItem } from '@/db/generated/prisma/client';
-import { getProductDailyFavourites, getProducts } from '@/api/server-actions/product.actions';
+import { getProductDailyFavourites, getProductFeatured, getProducts, insertProduct } from '@/api/server-actions/product.actions';
+import { productsBackup } from '@/api/constants/mock';
 
 type Props = {
   children: React.ReactElement,
@@ -21,6 +23,7 @@ export const AppLayout = ({ children }: Props) => {
   const [isRawProductsLoadingInProgress, setIsRawProductsLoadingInProgress] = useState(false);
   const [cartItems, setCartItems] = useState<CartOrderItem[]>([]);
   const [rawProducts, setRawProducts] = useState<ProductItem[]>([]);
+  const [productsFeatured, setProductsFeatured] = useState<number[]>([]);
   const [productDailyFavourites, setProductDailyFavourites] = useState<number[]>([]);
   const [productFilters, setProductFilters] = useState<ProductFilters>({
     price_range: { min: undefined, max: undefined },
@@ -29,16 +32,54 @@ export const AppLayout = ({ children }: Props) => {
     voltage: [],
   });
 
-  useEffect(() => {
-    setIsRawProductsLoadingInProgress(true);
-    getProductDailyFavourites().then((data) => {
-      setProductDailyFavourites(data.map((item) => item.id));
+  const requestFeaturedProducts = () => {
+    getProductFeatured().then((data) => {
+      setProductsFeatured(data.map((item) => item.product_item_id));
     });
+  };
+
+  const requestProducts = () => {
+    setIsRawProductsLoadingInProgress(true);
+    
     getProducts().then((data) => {
       setRawProducts(data);
     }).finally(() => {
       setIsRawProductsLoadingInProgress(false);
     });
+  };
+
+  const requestDailyFavs = () => {
+    getProductDailyFavourites().then((data) => {
+      setProductDailyFavourites(data.map((item) => item.id));
+    });
+  };
+
+  const _productsBackupInBatch = () => {
+    productsBackup.forEach((product) => {
+      insertProduct(product as any);
+    });
+  };
+
+  const injectScripts = () => {
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4';
+    script.async = true;
+
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }
+
+  useEffect(() => {
+    requestDailyFavs();
+    requestFeaturedProducts();
+    requestProducts();
+
+    const unmount = injectScripts();
+
+    return unmount;
   }, []);
 
   const filteredProducts = useMemo(() => {
@@ -61,19 +102,21 @@ export const AppLayout = ({ children }: Props) => {
     return items;
   }, [productFilters, rawProducts]);
 
-  const handleCartOpen = () => setCartOpen(true);
+  const handleCartOpen = () => {
+    setCartOpen(true);
+  }
+
+  const handleCartClose = () => {
+    setCartOpen(false);
+  };
 
   return (
-    <div className="min-h-screen bg-background">
-      <ChargeStateIndicator />
-      <Navbar onCartOpen={handleCartOpen} />
-      <CartDrawer open={cartOpen} onOpenChange={handleCartOpen} />
-      <main>
-        <ProductProvider value={{
+    <ProductProvider value={{
           rawProducts,
           productDailyFavourites,
           filteredProducts,
           productFilters,
+          productsFeatured,
           isRawProductsLoadingInProgress,
           setProductFilters: (name, value) => {
             setProductFilters((prev) => ({
@@ -107,11 +150,16 @@ export const AppLayout = ({ children }: Props) => {
               }))
             },
           }}>
-          {children}
-          </CartProvider>
-        </ProductProvider>
-      </main>
-      <Footer />
-    </div>
+          <div className="min-h-screen bg-background">
+            <ChargeStateIndicator />
+            <Navbar onCartOpen={handleCartOpen} />
+            <CartDrawer open={cartOpen} onOpenChange={handleCartOpen} onCloseChange={handleCartClose} />
+              <main>
+                {children}
+              </main>
+            <Footer />
+        </div>
+      </CartProvider>
+    </ProductProvider>
   );
 }

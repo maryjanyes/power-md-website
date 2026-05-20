@@ -3,6 +3,7 @@ export interface CartOrderItem {
   product_id: number,
   product_name: string,
   price: number,
+  weight: string,
 }
 
 export interface CartOrderPayload {
@@ -18,4 +19,5 @@ export interface CartOrderShippingContactForm {
   zip_code: string,
   country: string,
   notes: string,
+  email: string,
 }

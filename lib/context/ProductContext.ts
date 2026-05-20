@@ -16,6 +16,7 @@ export const ProductContext = createContext<{
     rawProducts: ProductItem[],
     productDailyFavourites: number[],
     filteredProducts: ProductItem[],
+    productsFeatured: number[],
     productFilters: ProductFilters,
     isRawProductsLoadingInProgress: boolean,
     setProductFilters: (name: string, value: number[] | string) => void,
@@ -26,6 +27,7 @@ export const ProductContext = createContext<{
     rawProducts: [],
     productDailyFavourites: [],
     filteredProducts: [],
+    productsFeatured: [],
     isRawProductsLoadingInProgress: false,
     productFilters: {
         price_range: { min: undefined, max: undefined },

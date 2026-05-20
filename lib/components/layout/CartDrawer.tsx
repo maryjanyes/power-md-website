@@ -1,5 +1,4 @@
 /* eslint-disable @next/next/no-img-element */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/lib/components/ui/sheet";
@@ -11,15 +10,18 @@ import { CartContext } from "@/lib/context/CartContext";
 import { ProductContext } from "@/lib/context/ProductContext";
 
 type Props = {
-  onOpenChange: (open: boolean) => void,
+  onOpenChange: () => void,
+  onCloseChange: () => void,
   open: boolean,
 }
 
 const ButtonComponent: any = Button;
 const SheetContentComponent: any = SheetContent;
 const SheetTitleComponent: any = SheetTitle;
+const SheetHeaderComponent: any = SheetHeader;
+const SheetComponent: any = Sheet;
 
-export default function CartDrawer({ open, onOpenChange }: Props) {
+export default function CartDrawer({ open, onOpenChange, onCloseChange }: Props) {
   const { rawProducts } = useContext(ProductContext);
   const { cartItems, updateCardItemQuantity, removeCartItem } = useContext(CartContext);
 
@@ -28,17 +30,17 @@ export default function CartDrawer({ open, onOpenChange }: Props) {
   };
 
   return (
-    <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContentComponent className="w-full sm:max-w-lg bg-background border-l border-border p-0 flex flex-col">
-        <SheetHeader className="px-6 pt-6 pb-4 border-b border-border">
+    <SheetComponent open={open} onOpenChange={onOpenChange}>
+      <SheetContentComponent className="w-full sm:max-w-lg bg-background border-l border-border p-0 flex flex-col" onClose={onCloseChange}>
+        <SheetHeaderComponent className="px-6 pt-6 pb-4 border-b border-border">
           <SheetTitleComponent className="font-heading text-xl flex items-center gap-3 text-foreground">
             <ShoppingCart className="w-5 h-5 text-primary" />
             CHARGE RESERVOIR
-            <span className="text-xs font-mono text-muted-foreground ml-auto">
+            <span className="text-xs font-mono text-muted-foreground ml-auto mt-5">
               {cartItems.length} {cartItems.length === 1 ? 'UNIT' : 'UNITS'}
             </span>
           </SheetTitleComponent>
-        </SheetHeader>
+        </SheetHeaderComponent>
 
         <div className="flex-1 overflow-y-auto px-6 py-4">
           {cartItems.length === 0 ? (
@@ -88,7 +90,7 @@ export default function CartDrawer({ open, onOpenChange }: Props) {
                         </div>
                         <div className="flex items-center gap-3">
                           <span className="text-sm font-mono text-primary font-semibold">
-                            ${(item.price * item.quantity).toFixed(2)}
+                            ₴{(item.price * item.quantity).toFixed(2)}
                           </span>
                           <button
                             onClick={() => removeCartItem(item.product_id)}
@@ -112,13 +114,13 @@ export default function CartDrawer({ open, onOpenChange }: Props) {
               <span className="text-muted-foreground flex items-center gap-2">
                 <Weight className="w-4 h-4" /> TOTAL WEIGHT
               </span>
-              <span>{cartItems.reduce((total, item) => total += item.price, 0)} kg</span>
+              <span>{cartItems.reduce((total, item) => total += Number(item.weight), 0)} kg</span>
             </div>
             <div className="flex items-center justify-between font-heading text-lg">
               <span className="text-muted-foreground">TOTAL</span>
-              <span className="text-primary font-bold">${cartItems.reduce((total, item) => total += item.price, 0)}</span>
+              <span className="text-primary font-bold">₴{cartItems.reduce((total, item) => total += item.price, 0)}</span>
             </div>
-            <Link to="/checkout" onClick={() => onOpenChange(false)}>
+            <Link to="/checkout" onClick={onOpenChange}>
               <ButtonComponent className="w-full h-12 bg-primary text-primary-foreground font-heading font-bold tracking-wider text-sm haptic-btn hover:bg-primary/90 gap-2 mt-2">
                 INITIATE CHECKOUT
                 <ArrowRight className="w-4 h-4" />
@@ -127,6 +129,6 @@ export default function CartDrawer({ open, onOpenChange }: Props) {
           </div>
         )}
       </SheetContentComponent>
-    </Sheet>
+    </SheetComponent>
   );
 }

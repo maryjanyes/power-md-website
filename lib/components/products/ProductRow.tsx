@@ -34,6 +34,7 @@ export const ProductRow = ({ product, index }: Props) => {
       product_name: product.name,
       price: product.price,
       quantity: 1,
+      weight: product.weight_kg,
     });
     toast.success(`${product.name} added to cart`, {
       description: `${product.voltage}V · ${product.capacity_ah}Ah`,

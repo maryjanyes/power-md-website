@@ -1,54 +1,24 @@
-export const mockedProducts = [{
-  id: 0,
-  name: "Bosch 100 (R+)",
+export const productsBackup = [{
+  name: "BOSCH (S40 240) (D23) Asia 60Ah 540A R+",
   image_url: "",
   voltage: 600,
   capacity_ah: 50,
   cycle_life: 2,
-  chemistry: "",
-  weight_kg: "30",
-  warranty_years: "2",
+  weight_kg: "20",
+  warranty_years: "1",
   dimensions: "(100, 50, 60)",
-  price: 1400,
-  description: "",
+  price: 3160.01,
   in_stock: false,
-  starting_current_a: 100,
+  starting_current_a: 400,
   polarity: "R+",
   production_country: "Ukraine",
   brand: "Bosch",
-  terminal_category_id: 0,
+  terminal_category_id: 2,
   terminal_cover_type: "AGM",
+}];
+
+export const productsCategories = [{
+  name: "AGM",
 }, {
-  id: 1,
-  name: "Bosch 200 (R+)",
-  image_url: "",
-  voltage: 700,
-  capacity_ah: 80,
-  cycle_life: 2,
-  chemistry: "",
-  weight_kg: "30",
-  warranty_years: "2",
-  dimensions: "(120, 50, 60)",
-  price: 1600,
-  description: "",
-  in_stock: false,
-  starting_current_a: 100,
-  polarity: "R+",
-  production_country: "Ukraine",
-  brand: "Bosch",
-  terminal_category_id: 0,
-  terminal_cover_type: "AGM",
-}];
-
-export const mockedFavs = [{
-  id: 0,
-  name: "",
-}];
-
-export const mockedCartItems = [{
-  id: "",
-  product_id: "1",
-  product_name: "LiPo 4 battery",
-  quantity: 2,
-  price: 100,
+  name: "GEL",
 }];
