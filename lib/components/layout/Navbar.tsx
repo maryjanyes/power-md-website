@@ -9,11 +9,11 @@ import { companyName } from '@/api/constants/website';
 
 type Props = {
   onCartOpen: () => void,
-};
+}
 
 const navLinks = [
-  { label: 'AGM', to: '/products/AGM' },
-  { label: 'GEL', to: '/products/GEL' },
+  { label: 'Тип: AGM', to: '/products/AGM' },
+  { label: 'Тип: GEL', to: '/products/GEL' },
 ];
 
 export const Navbar = ({ onCartOpen }: Props) => {
@@ -36,7 +36,7 @@ export const Navbar = ({ onCartOpen }: Props) => {
   }, [setUpScrollEv]);
 
   return (
-    <nav className={`absolute top-0 left-0 right-0 z-50 duration-300 w-[20%] ${scrolled ? 'bg-background/90 backdrop-blur-xl border-b border-border' : 'bg-transparent'}`}>
+    <nav className={`absolute top-0 left-0 right-0 z-50 duration-300 w-[10%] ${scrolled ? 'bg-background/90 backdrop-blur-xl border-b border-border' : 'bg-transparent'}`}>
       <div className="max-w-7xl mx-auto p-5 bg-primary-foreground">
         <div className="flex flex-col gap-3 h-[100vh]">
           <Link href="/" className="flex items-center gap-4">
@@ -115,7 +115,7 @@ export const Navbar = ({ onCartOpen }: Props) => {
                 onClick={() => setMobileOpen(false)}
                 className="block px-4 py-3 text-sm font-mono text-muted-foreground hover:text-foreground hover:bg-secondary rounded-lg transition-colors"
               >
-                УСІ ПРОДУКТИ
+                Усі товари
               </Link>
             </div>
           </motion.div>

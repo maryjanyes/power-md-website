@@ -1,6 +1,8 @@
 'use client';
 
-import { Link, Zap } from 'lucide-react';
+import { productTypeCategories } from '@/api/constants/categories';
+import { Zap } from 'lucide-react';
+import Link from 'next/link';
 
 export default function Footer() {
   return (
@@ -8,11 +10,8 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
-            <Link to="/" className="flex items-center gap-2 mb-4">
+            <Link href="/" className="flex items-center gap-2 mb-4">
               <Zap className="w-5 h-5 text-primary" />
-              {/* <span className="font-heading font-bold text-lg tracking-tight">
-                IONIC<span className="text-primary">FLUX</span>
-              </span> */}
             </Link>
             <p className="text-sm text-muted-foreground font-mono leading-relaxed">
               Рішення для накопичення енергії нового покоління. Точно розроблені акумулятори для будь-якого застосування.
@@ -23,15 +22,20 @@ export default function Footer() {
             <div>
               <h4 className="font-heading font-semibold text-sm tracking-wider mb-4 text-foreground">ТИП АКУМУЛЯТОРА</h4>
               <div className="space-y-2">
-                <Link to="/products/AGM" className="block text-sm font-mono text-muted-foreground hover:text-primary transition-colors">AGM</Link>
-                <Link to="/products/GEL" className="block text-sm font-mono text-muted-foreground hover:text-primary transition-colors">GEL</Link>
+                {productTypeCategories.map((category) => (
+                  <Link
+                    key={category.name}
+                    href={`/products/${category.name}`}
+                    className="block text-sm font-mono text-muted-foreground hover:text-primary transition-colors"
+                  >{category.name}</Link>
+                ))}
               </div>
             </div>
 
             <div>
               <h4 className="font-heading font-semibold text-sm tracking-wider mb-4 text-foreground">ПІДТРИМКА</h4>
               <div className="space-y-2">
-                <Link to="/products" className="block text-sm font-mono text-muted-foreground hover:text-primary transition-colors">УСІ ПРОДУКТИ</Link>
+                <Link href="/products" className="block text-sm font-mono text-muted-foreground hover:text-primary transition-colors">УСІ ПРОДУКТИ</Link>
                 <span className="block text-sm font-mono text-muted-foreground">Технічна специфікація</span>
                 <span className="block text-sm font-mono text-muted-foreground">Гарантійна інформація</span>
               </div>
@@ -40,8 +44,8 @@ export default function Footer() {
             <div>
               <h4 className="font-heading font-semibold text-sm tracking-wider mb-4 text-foreground">КОНТАКТИ</h4>
               <div className="space-y-2 text-sm font-mono text-muted-foreground">
-                <p>todo@gmail.com</p>
-                <p>+380todo</p>
+                <p>power.ukr100@gmail.com</p>
+                <p>+380633002011</p>
               </div>
             </div>
           </div>

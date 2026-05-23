@@ -5,23 +5,23 @@ import { ProductContext } from "../context/ProductContext";
 
 type Params = {
     productId?: number,
-    productCategoryId?: string,
+    productTerminalType?: string,
 }
 
 export const useProducts = (params: Params) => {
     const { productFilters, rawProducts } = useContext(ProductContext);
     const productById = useMemo(() => {
-        if (params.productId) {
+        if (params.productId !== undefined) {
             return rawProducts.find((product) => product.id === params.productId);
         }
 
         return null;
     }, [params.productId, rawProducts]);
     const productsByCategory = useMemo(() => {
-        if (params.productCategoryId) {
-            return rawProducts.filter((product) => product.terminal_cover_type === params.productCategoryId);
+        if (params.productTerminalType) {
+            return rawProducts.filter((product) => product.terminal_cover_type === params.productTerminalType);
         }
-    }, [params.productCategoryId, rawProducts]);
+    }, [params.productTerminalType, rawProducts]);
     const filteredProducts = useMemo(() => {
         let items = [...rawProducts];
 
@@ -35,7 +35,7 @@ export const useProducts = (params: Params) => {
 
         if (productFilters.price_range?.min && productFilters.price_range?.max) {
             items = items.filter((item) =>
-                item.price > (productFilters.price_range.min as number) && item.price < (productFilters.price_range?.max as number)
+                item.price > (productFilters.price_range?.min as number) && item.price < (productFilters.price_range?.max as number)
             );
         }
 

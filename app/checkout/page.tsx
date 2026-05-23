@@ -1,14 +1,17 @@
+"use client";
+
 import { useContext, useState } from "react";
 import { Button } from "@/lib/components/ui/button";
 import { Input } from "@/lib/components/ui/input";
 import { Label } from "@/lib/components/ui/label";
 import { Textarea } from "@/lib/components/ui/textarea";
-import { ArrowLeft, ArrowRight, Package, CreditCard, Check, Loader2, Zap, Link } from "lucide-react";
+import { ArrowLeft, ArrowRight, Package, CreditCard, Check, Loader2, Zap } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 import { createNewCartOrder } from "@/api/server-actions/cart.actions";
 import { CartContext } from "@/lib/context/CartContext";
 import { useAuthenticatedUser } from "@/lib/hooks/useAuthenticatedUser";
+import Link from "next/link";
 
 const STEPS = ['SHIPPING', 'REVIEW', 'CONFIRM'];
 
@@ -17,16 +20,12 @@ const LabelComponent: any = Label;
 const InputComponent: any = Input;
 const TextareaComponent: any = Textarea;
 
-const getCardItemsTotal = (items: { price: number }[], by = "price") => {
-  return items.reduce((total, item) => total += (item as any)[by], 0);
-};
-
 export default function CheckoutPage() {
   const { user } = useAuthenticatedUser();
   const { clearCart, cartItems } = useContext(CartContext);
   const [step, setStep] = useState(0);
   const [submitting, setSubmitting] = useState(false);
-  const [orderContactForm, setOrderContactForm] = useState({
+  const [shippingContactForm, setShippingContactForm] = useState({
     full_name: '',
     email: '',
     phone: '',
@@ -37,18 +36,18 @@ export default function CheckoutPage() {
     notes: '',
   });
 
-  const updateField = (fieldName: string, fieldValue: string) => setOrderContactForm(prev => ({
+  const updateField = (fieldName: string, fieldValue: string) => setShippingContactForm(prev => ({
     ...prev,
     [fieldName]: fieldValue,
   }));
 
   const contactFieldsFilled =
-    orderContactForm.full_name &&
-    orderContactForm.email &&
-    orderContactForm.home_address &&
-    orderContactForm.phone &&
-    orderContactForm.city &&
-    orderContactForm.country;
+    shippingContactForm.full_name &&
+    shippingContactForm.email &&
+    shippingContactForm.home_address &&
+    shippingContactForm.phone &&
+    shippingContactForm.city &&
+    shippingContactForm.country;
   const canProceed = step === 0
     ? !!user || contactFieldsFilled
     : true;
@@ -57,7 +56,7 @@ export default function CheckoutPage() {
     setSubmitting(true);
 
     const values = {
-      shippingContactInfo: orderContactForm,
+      shippingContactInfo: shippingContactForm,
       items: cartItems,
     };
     await createNewCartOrder(values, user);
@@ -73,10 +72,10 @@ export default function CheckoutPage() {
       <div className="min-h-screen pt-28 pb-20 flex items-center justify-center">
         <div className="text-center">
           <Package className="w-12 h-12 text-muted-foreground/30 mx-auto mb-4" />
-          <p className="font-mono text-muted-foreground text-sm mb-4">YOUR CART IS EMPTY</p>
-          <Link to="/products">
+          <p className="font-mono text-muted-foreground text-sm mb-4">Корзина пуста</p>
+          <Link href="/products">
             <ButtonComponent variant="outline" className="font-mono text-sm gap-2">
-              <ArrowLeft className="w-4 h-4" /> BROWSE PRODUCTS
+              <ArrowLeft className="w-4 h-4" />До списку товарів
             </ButtonComponent>
           </Link>
         </div>
@@ -87,15 +86,13 @@ export default function CheckoutPage() {
   return (
     <div className="min-h-screen pt-24 sm:pt-28 pb-20">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <Link to="/products" className="inline-flex items-center gap-2 text-xs font-mono text-muted-foreground hover:text-primary transition-colors mb-8">
-          <ArrowLeft className="w-3.5 h-3.5" /> BACK TO PRODUCTS
+        <Link href="/products" className="inline-flex items-center gap-2 text-xs font-mono text-muted-foreground hover:text-primary transition-colors mb-8">
+          <ArrowLeft className="w-3.5 h-3.5" />Повернутись до каталогу
         </Link>
 
-        <h1 className="font-heading font-bold text-2xl sm:text-3xl tracking-tight mb-2">CHECKOUT</h1>
-        <p className="font-mono text-sm text-muted-foreground mb-8">PROGRESSIVE ACTIVATION SEQUENCE</p>
+        <h1 className="font-heading font-bold text-2xl sm:text-3xl tracking-tight mb-2">Підтвердити замовлення</h1>
+        <p className="font-mono text-sm text-muted-foreground mb-8">Кроки активації</p>
 
-        {/* Step indicators */}
         <div className="flex items-center gap-2 mb-10">
           {STEPS.map((s, i) => (
             <div key={s} className="flex items-center gap-2">
@@ -125,40 +122,40 @@ export default function CheckoutPage() {
             >
               <div className="p-6 rounded-xl border border-border bg-card/40">
                 <h2 className="font-heading font-semibold text-lg mb-6 flex items-center gap-2">
-                  <Package className="w-5 h-5 text-primary" /> SHIPPING INFORMATION
+                  <Package className="w-5 h-5 text-primary" />Контактна інформація про замовника
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <LabelComponent className="text-xs font-mono text-muted-foreground">FULL NAME *</LabelComponent>
-                    <InputComponent value={orderContactForm.full_name} onChange={(e: any) => updateField('full_name', e.target.value)} className="bg-secondary border-border font-mono" />
+                    <LabelComponent className="text-xs font-mono text-muted-foreground">Повне імя *</LabelComponent>
+                    <InputComponent value={shippingContactForm.full_name} onChange={(e: any) => updateField('full_name', e.target.value)} className="bg-secondary border-border font-mono" />
                   </div>
                   <div className="space-y-2">
-                    <LabelComponent className="text-xs font-mono text-muted-foreground">EMAIL *</LabelComponent>
-                    <InputComponent type="email" value={orderContactForm.email} onChange={(e: any) => updateField('email', e.target.value)} className="bg-secondary border-border font-mono" />
+                    <LabelComponent className="text-xs font-mono text-muted-foreground">Email *</LabelComponent>
+                    <InputComponent type="email" value={shippingContactForm.email} onChange={(e: any) => updateField('email', e.target.value)} className="bg-secondary border-border font-mono" />
                   </div>
                   <div className="space-y-2 sm:col-span-2">
-                    <LabelComponent className="text-xs font-mono text-muted-foreground">ADDRESS *</LabelComponent>
-                    <InputComponent value={orderContactForm.home_address} onChange={(e: any) => updateField('home_address', e.target.value)} className="bg-secondary border-border font-mono" />
+                    <LabelComponent className="text-xs font-mono text-muted-foreground">Адреса доставки *</LabelComponent>
+                    <InputComponent value={shippingContactForm.home_address} onChange={(e: any) => updateField('home_address', e.target.value)} className="bg-secondary border-border font-mono" />
                   </div>
                   <div className="space-y-2">
-                    <LabelComponent className="text-xs font-mono text-muted-foreground">CITY *</LabelComponent>
-                    <InputComponent value={orderContactForm.city} onChange={(e: any) => updateField('city', e.target.value)} className="bg-secondary border-border font-mono" />
+                    <LabelComponent className="text-xs font-mono text-muted-foreground">Місто *</LabelComponent>
+                    <InputComponent value={shippingContactForm.city} onChange={(e: any) => updateField('city', e.target.value)} className="bg-secondary border-border font-mono" />
                   </div>
                   <div className="space-y-2">
-                    <LabelComponent className="text-xs font-mono text-muted-foreground">ZIP / POSTAL</LabelComponent>
-                    <InputComponent value={orderContactForm.zip_code} onChange={(e: any) => updateField('zip_code', e.target.value)} className="bg-secondary border-border font-mono" />
+                    <LabelComponent className="text-xs font-mono text-muted-foreground">ZIP код</LabelComponent>
+                    <InputComponent value={shippingContactForm.zip_code} onChange={(e: any) => updateField('zip_code', e.target.value)} className="bg-secondary border-border font-mono" />
                   </div>
                   <div className="space-y-2">
-                    <LabelComponent className="text-xs font-mono text-muted-foreground">COUNTRY *</LabelComponent>
-                    <InputComponent value={orderContactForm.country} onChange={(e: any) => updateField('country', e.target.value)} className="bg-secondary border-border font-mono" />
+                    <LabelComponent className="text-xs font-mono text-muted-foreground">Країна *</LabelComponent>
+                    <InputComponent value={shippingContactForm.country} onChange={(e: any) => updateField('country', e.target.value)} className="bg-secondary border-border font-mono" />
                   </div>
                   <div className="space-y-2">
-                    <LabelComponent className="text-xs font-mono text-muted-foreground">PHONE</LabelComponent>
-                    <InputComponent value={orderContactForm.phone} onChange={(e: any) => updateField('phone', e.target.value)} className="bg-secondary border-border font-mono" />
+                    <LabelComponent className="text-xs font-mono text-muted-foreground">Телефон</LabelComponent>
+                    <InputComponent value={shippingContactForm.phone} onChange={(e: any) => updateField('phone', e.target.value)} className="bg-secondary border-border font-mono" />
                   </div>
                   <div className="space-y-2 sm:col-span-2">
-                    <LabelComponent className="text-xs font-mono text-muted-foreground">NOTES</LabelComponent>
-                    <TextareaComponent value={orderContactForm.notes} onChange={(e: any) => updateField('notes', e.target.value)} className="bg-secondary border-border font-mono" rows={3} />
+                    <LabelComponent className="text-xs font-mono text-muted-foreground">Додатково</LabelComponent>
+                    <TextareaComponent value={shippingContactForm.notes} onChange={(e: any) => updateField('notes', e.target.value)} className="bg-secondary border-border font-mono" rows={3} />
                   </div>
                 </div>
               </div>
@@ -168,7 +165,7 @@ export default function CheckoutPage() {
                 disabled={!canProceed}
                 className="w-full h-12 bg-primary text-primary-foreground font-heading font-bold tracking-wider haptic-btn gap-2"
               >
-                PROCEED TO REVIEW <ArrowRight className="w-4 h-4" />
+                Підтвердити контакти<ArrowRight className="w-4 h-4" />
               </ButtonComponent>
             </motion.div>
           )}
@@ -181,45 +178,45 @@ export default function CheckoutPage() {
               exit={{ opacity: 0, x: -20 }}
               className="space-y-6"
             >
-              {/* Order summary */}
               <div className="p-6 rounded-xl border border-border bg-card/40">
                 <h2 className="font-heading font-semibold text-lg mb-4 flex items-center gap-2">
-                  <CreditCard className="w-5 h-5 text-primary" /> ORDER SUMMARY
+                  <CreditCard className="w-5 h-5 text-primary" />Загальна інформація
                 </h2>
                 <div className="divide-y divide-border/50">
                   {cartItems.map(item => (
                     <div key={item.product_id} className="flex items-center justify-between py-3 text-sm">
                       <div>
                         <p className="font-heading font-medium">{item.product_name}</p>
-                        <p className="text-xs font-mono text-muted-foreground">Qty: {item.quantity}</p>
+                        <p className="text-xs font-mono text-muted-foreground">Кількість: {item.quantity}</p>
                       </div>
-                      <p className="font-mono text-primary font-semibold">${(item.price * item.quantity).toFixed(2)}</p>
+                      <p className="font-mono text-primary font-semibold">
+                        ₴{(item.price * item.quantity).toFixed(2)}
+                      </p>
                     </div>
                   ))}
                 </div>
                 <div className="pt-4 mt-4 border-t border-border flex items-center justify-between">
                   <div>
-                    <p className="text-xs font-mono text-muted-foreground">Weight: {getCardItemsTotal(cartItems, "weight")} kg</p>
+                    <p className="text-xs font-mono text-muted-foreground">Вага: {cartItems.reduce((total, item) => total += (Number(item.weight) * item.quantity), 0)} кг.</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-xs font-mono text-muted-foreground">TOTAL</p>
-                    <p className="text-2xl font-heading font-bold text-primary">${getCardItemsTotal(cartItems, "price")}</p>
+                    <p className="text-xs font-mono text-muted-foreground">Фінальна ціна</p>
+                    <p className="text-2xl font-heading font-bold text-primary">₴{cartItems.reduce((total, item) => total += (item.price * item.quantity), 0)}</p>
                   </div>
                 </div>
               </div>
 
-              {/* Shipping info */}
               <div className="p-6 rounded-xl border border-border bg-card/40">
-                <p className="text-xs font-mono text-muted-foreground tracking-wider mb-3">SHIP TO</p>
-                <p className="text-sm font-mono">{orderContactForm.full_name}</p>
-                <p className="text-sm font-mono text-muted-foreground">{orderContactForm.home_address}</p>
-                <p className="text-sm font-mono text-muted-foreground">{orderContactForm.city} {orderContactForm.zip_code}</p>
-                <p className="text-sm font-mono text-muted-foreground">{orderContactForm.country}</p>
+                <p className="text-xs font-mono text-muted-foreground tracking-wider mb-3">Місце доставки</p>
+                <p className="text-sm font-mono">{shippingContactForm.full_name}</p>
+                <p className="text-sm font-mono text-muted-foreground">{shippingContactForm.home_address}</p>
+                <p className="text-sm font-mono text-muted-foreground">{shippingContactForm.city} {shippingContactForm.zip_code}</p>
+                <p className="text-sm font-mono text-muted-foreground">{shippingContactForm.country}</p>
               </div>
 
               <div className="flex gap-3">
                 <ButtonComponent variant="outline" onClick={() => setStep(0)} className="flex-1 h-12 font-heading font-bold tracking-wider haptic-btn">
-                  BACK
+                  Повернутись
                 </ButtonComponent>
                 <ButtonComponent
                   onClick={handleSubmit}
@@ -227,7 +224,7 @@ export default function CheckoutPage() {
                   className="flex-2 h-12 bg-primary text-primary-foreground font-heading font-bold tracking-wider haptic-btn gap-2"
                 >
                   {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Zap className="w-4 h-4" />}
-                  {submitting ? 'PROCESSING...' : 'PLACE ORDER'}
+                  {submitting ? "Створюємо..." : "Фіналізувати"}
                 </ButtonComponent>
               </div>
             </motion.div>
@@ -243,13 +240,13 @@ export default function CheckoutPage() {
               <div className="w-20 h-20 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center mx-auto mb-6">
                 <Check className="w-8 h-8 text-primary" />
               </div>
-              <h2 className="font-heading font-bold text-2xl sm:text-3xl mb-3">ORDER CONFIRMED</h2>
+              <h2 className="font-heading font-bold text-2xl sm:text-3xl mb-3">Замовлення підтверджено</h2>
               <p className="font-mono text-sm text-muted-foreground max-w-md mx-auto mb-8">
-                Your order has been placed successfully. Well send confirmation details to {orderContactForm.email}.
+                Ваше замовлення успішно підтверджено. Погодження відправлене на пошту {shippingContactForm.email}.
               </p>
-              <Link to="/products">
+              <Link href="/products">
                 <ButtonComponent className="bg-primary text-primary-foreground font-heading font-bold tracking-wider haptic-btn gap-2">
-                  CONTINUE SHOPPING <ArrowRight className="w-4 h-4" />
+                  Продовжити <ArrowRight className="w-4 h-4" />
                 </ButtonComponent>
               </Link>
             </motion.div>

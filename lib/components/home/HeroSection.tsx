@@ -39,16 +39,19 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.1 }}
-            className="font-heading font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.05] tracking-tight text-foreground"
+            className="font-heading font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tight text-foreground"
           >
             PRECISION<br/><span className="text-primary">ENGINEERED</span><br/>POWER
           </motion.h1>
           
-          <div className="flex flex-row flex-wrap w-full gap-3">
+        <div className="mt-10">
+          <p className="text-xl font-mono text-primary">Знижки і ТОП продажів 🔥</p>
+          <div className="flex flex-row flex-wrap w-full gap-5 mt-5">
             {products.map((product, productId) => (
               <ProductCard {...product} key={productId} />
             ))}
           </div>
+        </div>
       </div>
     </section>
   );

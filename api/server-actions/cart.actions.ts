@@ -1,3 +1,5 @@
+'use server';
+
 import { User } from '@/db/generated/prisma/client';
 import { prisma } from '@/lib/prisma';
 import { CartOrderPayload } from '@/lib/types/cart.types';
@@ -56,7 +58,7 @@ export async function createNewCartOrder(cartOrderPayload: CartOrderPayload, use
     from: `"Power.UKR" <power_ukr.support@gmail.com>`,
     to: user?.email || shippingContactInfo.email,
     subject: `Нове замовлення #(${newCartOrder.id})`,
-    html: `<div><p>Ваше замовлення відправлено в обробку. Чекайте на дзвінок менеджера.</p></div>`
+    html: `<div><p>Ваше замовлення відправлено в обробку. Очікуйте на дзвінок менеджера.</p></div>`
   }
   await transport.sendMail(emailParams);
 

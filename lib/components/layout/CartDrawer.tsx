@@ -1,13 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
 
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/lib/components/ui/sheet";
-import { Button } from "@/lib/components/ui/button";
-import { Minus, Plus, Trash2, ShoppingCart, Weight, ArrowRight, Link } from 'lucide-react';
+import { Minus, Plus, Trash2, ShoppingCart, Weight, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useContext } from "react";
+import Link from "next/link";
 import { CartContext } from "@/lib/context/CartContext";
 import { ProductContext } from "@/lib/context/ProductContext";
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/lib/components/ui/sheet";
+import { Button } from "@/lib/components/ui/button";
 
 type Props = {
   onOpenChange: () => void,
@@ -30,14 +31,13 @@ export default function CartDrawer({ open, onOpenChange, onCloseChange }: Props)
   };
 
   return (
-    <SheetComponent open={open} onOpenChange={onOpenChange}>
+    <SheetComponent open={open}>
       <SheetContentComponent className="w-full sm:max-w-lg bg-background border-l border-border p-0 flex flex-col" onClose={onCloseChange}>
         <SheetHeaderComponent className="px-6 pt-6 pb-4 border-b border-border">
           <SheetTitleComponent className="font-heading text-xl flex items-center gap-3 text-foreground">
-            <ShoppingCart className="w-5 h-5 text-primary" />
-            CHARGE RESERVOIR
+            <ShoppingCart className="w-5 h-5 text-primary" />Кошик
             <span className="text-xs font-mono text-muted-foreground ml-auto mt-5">
-              {cartItems.length} {cartItems.length === 1 ? 'UNIT' : 'UNITS'}
+              {cartItems.length} шт.
             </span>
           </SheetTitleComponent>
         </SheetHeaderComponent>
@@ -46,16 +46,16 @@ export default function CartDrawer({ open, onOpenChange, onCloseChange }: Props)
           {cartItems.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full text-muted-foreground">
               <ShoppingCart className="w-12 h-12 mb-4 opacity-30" />
-              <p className="font-mono text-sm">RESERVOIR EMPTY</p>
+              <p className="font-mono text-sm">корзина пуста</p>
             </div>
           ) : (
             <AnimatePresence>
-              {cartItems.map(item => {
+              {cartItems?.map(item => {
                 const product = getProduct(item.product_id);
                   
                 return !!product && (
                   <motion.div
-                    key={item.product_id}
+                    key={item.product_name}
                     layout
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -70,7 +70,7 @@ export default function CartDrawer({ open, onOpenChange, onCloseChange }: Props)
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-heading font-semibold truncate text-foreground">{item.product_name}</p>
                       <p className="text-xs font-mono text-muted-foreground mt-0.5">
-                        {product?.capacity_ah} · {product.voltage}V · {product.capacity_ah}Ah
+                        {product?.capacity_ah} · {product.voltage}V · {product.capacity_ah}Ah.
                       </p>
                       <div className="flex items-center justify-between mt-2">
                         <div className="flex items-center gap-1">
@@ -110,19 +110,20 @@ export default function CartDrawer({ open, onOpenChange, onCloseChange }: Props)
 
         {cartItems.length > 0 && (
           <div className="px-6 py-4 border-t border-border bg-card/50 space-y-3">
-            <div className="flex items-center justify-between text-sm font-mono">
+            <div className="flex items-center justify-between text-sm">
               <span className="text-muted-foreground flex items-center gap-2">
-                <Weight className="w-4 h-4" /> TOTAL WEIGHT
+                Загальна вага
+                <Weight className="w-4 h-4" />
               </span>
-              <span>{cartItems.reduce((total, item) => total += Number(item.weight), 0)} kg</span>
+              <span>{cartItems.reduce((total, item) => total += (Number(item.weight) * item.quantity), 0)} кг.</span>
             </div>
-            <div className="flex items-center justify-between font-heading text-lg">
-              <span className="text-muted-foreground">TOTAL</span>
-              <span className="text-primary font-bold">₴{cartItems.reduce((total, item) => total += item.price, 0)}</span>
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-muted-foreground">Фінальна ціна</span>
+              <span className="text-primary font-bold">₴{cartItems.reduce((total, item) => total += (item.price * item.quantity), 0)}</span>
             </div>
-            <Link to="/checkout" onClick={onOpenChange}>
-              <ButtonComponent className="w-full h-12 bg-primary text-primary-foreground font-heading font-bold tracking-wider text-sm haptic-btn hover:bg-primary/90 gap-2 mt-2">
-                INITIATE CHECKOUT
+            <Link href="/checkout" onClick={onOpenChange}>
+              <ButtonComponent className="w-full h-12 bg-primary text-primary-foreground font-heading font-bold text-sm haptic-btn hover:bg-primary/90 gap-2 mt-2">
+                Фіналізувати замовлення
                 <ArrowRight className="w-4 h-4" />
               </ButtonComponent>
             </Link>

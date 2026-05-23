@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 export function SpecCard({ icon: Icon, label, value }: any) {
   return (
     <div className="p-3 rounded-lg border border-border bg-card/40">

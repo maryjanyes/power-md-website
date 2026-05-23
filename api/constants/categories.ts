@@ -20,27 +20,32 @@ export const productFilterCategories = [{
     name: "voltage",
 }, {
     title: "Плюсова клема (R/L)",
-    type: "radio",
-    name: "polarity",
-}, {
-    title: "Виконання корпусу",
     type: "checkbox",
-    name: "terminal_cover_type",
+    name: "polarity",
 }, {
     title: "Тип акумулятора",
     type: "checkbox",
     name: "terminal_category_id",
 }, {
     title: "Вага",
-    type: "checkbox",
+    type: "ranger",
+    symbol: "кг.",
+    rangeMax: 100,
     name: "weight_kg",
 }];
 
 export const productCategoryFilterValues = {
     brand: ["bosch", "maxion", "forse", "ista", "moll", "exide", "varta"],
     capacity_ah: [50, 60, 70, 80],
-    starting_current_a: [100, 200, 300],
-    terminal_cover_type: [],
+    starting_current_a: [100, 200, 300, 400, 500, 600],
+    polarity: ["L", "R"],
+    voltage: [12, 24, 36, 48],
+    terminal_category_id: ["AGM", "GEL"],
+};
+
+export const productivityIndex = {
+    AGM: 80,
+    GEL: 90,
 };
 
 export const productTypeCategories = [
