@@ -7,7 +7,7 @@ export const ProductDailyFavourites = () => {
     return !!productDailyFavourites && (
         <div className="p-5">
             {productDailyFavourites.map((fav) => {
-                const product = rawProducts.find((product) => product.id === fav.product_id);
+                const product = rawProducts.find((product) => product.id === fav.product_item_id);
 
                 return (
                     <div className="p-2" key={product?.id}>

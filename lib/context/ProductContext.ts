@@ -36,7 +36,7 @@ export interface ProductRangeFiltersQuery {
 export const ProductContext = createContext<{
     productRangeFilters: ProductRangeFiltersQuery,
     rawProducts: ProductItem[],
-    productDailyFavourites: number[],
+    productDailyFavourites: ProductFav[],
     productsFeatured: number[],
     productFilters: ProductFiltersQuery,
     isRawProductsLoadingInProgress: boolean,
