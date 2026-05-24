@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import { Minus, Plus, Trash2, ShoppingCart, Weight, ArrowRight } from 'lucide-react';
@@ -9,6 +8,7 @@ import { CartContext } from "@/lib/context/CartContext";
 import { ProductContext } from "@/lib/context/ProductContext";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/lib/components/ui/sheet";
 import { Button } from "@/lib/components/ui/button";
+import Image from 'next/image';
 
 type Props = {
   onOpenChange: () => void,
@@ -64,7 +64,14 @@ export default function CartDrawer({ open, onOpenChange, onCloseChange }: Props)
                   >
                     <div className="w-16 h-16 rounded-lg bg-secondary overflow-hidden flex-shrink-0">
                       {product?.image_url && (
-                        <img src={product?.image_url} alt={item.product_name} className="w-full h-full object-cover" />
+                        <Image
+                          src={product?.image_url}
+                          alt={item.product_name}
+                          width={100}
+                          height={100}
+                          title={item.product_name}
+                          className="w-full h-full object-cover"
+                        />
                       )}
                     </div>
                     <div className="flex-1 min-w-0">
@@ -76,14 +83,14 @@ export default function CartDrawer({ open, onOpenChange, onCloseChange }: Props)
                         <div className="flex items-center gap-1">
                           <button
                             onClick={() => updateCardItemQuantity(item.product_id, item.quantity - 1)}
-                            className="w-7 h-7 flex items-center justify-center bg-secondary rounded hover:bg-accent transition-colors haptic-btn"
+                            className="cursor-pointer w-7 h-7 flex items-center justify-center bg-secondary rounded hover:bg-accent transition-colors haptic-btn"
                           >
                             <Minus className="w-3 h-3" />
                           </button>
                           <span className="w-8 text-center text-sm font-mono">{item.quantity}</span>
                           <button
                             onClick={() => updateCardItemQuantity(item.product_id, item.quantity + 1)}
-                            className="w-7 h-7 flex items-center justify-center bg-secondary rounded hover:bg-accent transition-colors haptic-btn"
+                            className="cursor-pointer w-7 h-7 flex items-center justify-center bg-secondary rounded hover:bg-accent transition-colors haptic-btn"
                           >
                             <Plus className="w-3 h-3" />
                           </button>

@@ -3,7 +3,7 @@ import { ProductItem } from "@/db/generated/prisma/client";
 import { Search } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/lib/components/ui/select';
 import { Button } from '@/lib/components/ui/button';
-import { productTypeCategories } from "@/api/constants/categories";
+import { productTypeCategories } from "@/lib/constants/categories";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { motion } from 'framer-motion';

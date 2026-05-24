@@ -5,7 +5,7 @@ import { ShoppingCart, Menu, X, Zap } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CartContext } from '@/lib/context/CartContext';
 import Link from 'next/link';
-import { companyName } from '@/api/constants/website';
+import { companyName } from '@/lib/constants/website';
 
 type Props = {
   onCartOpen: () => void,

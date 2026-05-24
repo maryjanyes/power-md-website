@@ -54,12 +54,6 @@ model CartOrderItem {
   quantity     Int
 }
 
-model ProductItemCategory {
-  id    Int     @id @default(autoincrement()) 
-  name     String
-  product_items   ProductItem[]  
-}
-
 model ProductFav {
   id    Int     @id @default(autoincrement())
   date      DateTime @default(now())
@@ -81,8 +75,7 @@ model ProductItem {
   polarity     String
   production_country     String
   brand     String
-  terminal_category_id     Int
-  terminal_category     ProductItemCategory     @relation(fields: [terminal_category_id], references: [id]) 
+  terminal_category     String?
   terminal_cover_type     String
   image_url     String?
   in_stock     Boolean     @default(true)

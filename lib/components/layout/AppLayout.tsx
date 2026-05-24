@@ -8,7 +8,7 @@ import ChargeStateIndicator from './ChargeStateIndicator';
 import Footer from './Footer';
 import { CartProvider } from '@/lib/context/CartContext';
 import { CartOrderItem } from '@/lib/types/cart.types';
-import { ProductFilters, ProductProvider } from '@/lib/context/ProductContext';
+import { defaultProductFilters, defaultProductRangeFilters, ProductFiltersQuery, ProductProvider, ProductRangeFiltersQuery } from '@/lib/context/ProductContext';
 import { ProductItem } from '@/db/generated/prisma/client';
 import { getProductDailyFavourites, getProductFeatured, getProducts } from '@/api/server-actions/product.actions';
 
@@ -23,14 +23,8 @@ export const AppLayout = ({ children }: Props) => {
   const [rawProducts, setRawProducts] = useState<ProductItem[]>([]);
   const [productsFeatured, setProductsFeatured] = useState<number[]>([]);
   const [productDailyFavourites, setProductDailyFavourites] = useState<number[]>([]);
-  const [productFilters, setProductFilters] = useState<ProductFilters>({
-    price_range: undefined,
-    brand: [],
-    capacity_ah: [],
-    voltage: [],
-    sort_by: undefined,
-    search: '',
-  });
+  const [productFilters, setProductFilters] = useState<ProductFiltersQuery>(defaultProductFilters);
+  const [productRangeFilters, setProductRangeFilters] = useState<ProductRangeFiltersQuery>(defaultProductRangeFilters);
 
   const requestFeaturedProducts = () => {
     getProductFeatured().then((data) => {
@@ -38,15 +32,14 @@ export const AppLayout = ({ children }: Props) => {
     });
   };
 
-  const requestProducts = () => {
+  useEffect(() => {
     setIsRawProductsLoadingInProgress(true);
-    
-    getProducts().then((data) => {
+    getProducts({ ...productRangeFilters, ...productFilters }).then((data) => {
       setRawProducts(data);
     }).finally(() => {
       setIsRawProductsLoadingInProgress(false);
     });
-  };
+  }, [productRangeFilters, productFilters]);
 
   const requestDailyFavs = () => {
     getProductDailyFavourites().then((data) => {
@@ -69,7 +62,6 @@ export const AppLayout = ({ children }: Props) => {
   useEffect(() => {
     requestDailyFavs();
     requestFeaturedProducts();
-    requestProducts();
 
     const unmount = injectScripts();
 
@@ -89,8 +81,15 @@ export const AppLayout = ({ children }: Props) => {
       rawProducts,
       productDailyFavourites,
       productFilters,
+      productRangeFilters,
       productsFeatured,
       isRawProductsLoadingInProgress,
+      setProductRangeFilters: (name, value) => {
+        setProductRangeFilters((prev) => ({
+          ...prev,
+          [name]: value,
+        }));
+      },
       setProductFilters: (name, value) => {
         setProductFilters((prev) => ({
           ...prev,

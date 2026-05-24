@@ -1,7 +1,7 @@
 'use client';
 
-import { productTypeCategories } from "@/api/constants/categories";
-import { CategoryItem } from "./CategoryItem";
+import { productTypeCategories } from "@/lib/constants/categories";
+import CategoryItem from "./CategoryItem";
 
 export default function CategoryShowcase() {
   return (

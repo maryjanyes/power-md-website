@@ -25,22 +25,22 @@ export const productFilterCategories = [{
 }, {
     title: "Тип акумулятора",
     type: "checkbox",
-    name: "terminal_category_id",
-}, {
-    title: "Вага",
-    type: "ranger",
-    symbol: "кг.",
-    rangeMax: 100,
-    name: "weight_kg",
+    name: "terminal_category",
 }];
+// {     title: "Вага",
+//     type: "ranger",
+//     symbol: "кг.",
+//     rangeMax: 100,
+//     name: "weight_kg",
+// }
 
 export const productCategoryFilterValues = {
     brand: ["bosch", "maxion", "forse", "ista", "moll", "exide", "varta"],
-    capacity_ah: [50, 60, 70, 80],
-    starting_current_a: [100, 200, 300, 400, 500, 600],
+    capacity_ah: new Array(265).fill(null).map((_, aH_index) => aH_index),
+    starting_current_a: [],
     polarity: ["L", "R"],
     voltage: [12, 24, 36, 48],
-    terminal_category_id: ["AGM", "GEL"],
+    terminal_category: ["AGM", "GEL"],
 };
 
 export const productivityIndex = {

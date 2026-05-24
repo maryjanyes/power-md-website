@@ -1,14 +1,16 @@
-/* eslint-disable @next/next/no-img-element */
+'use client';
+
 import { motion } from 'framer-motion';
-import { Badge } from "@/lib/components/ui/badge";
-import { Button } from "@/lib/components/ui/button";
 import { ShoppingCart, ArrowRight, Zap } from 'lucide-react';
 import { toast } from 'sonner';
 import { useContext } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
 import { CartContext } from '@/lib/context/CartContext';
 import { ProductItem } from '@/db/generated/prisma/client';
-import Link from 'next/link';
 import { getChemistryColor } from '@/lib/utils/base';
+import { Badge } from "@/lib/components/ui/badge";
+import { Button } from "@/lib/components/ui/button";
 
 type Props = {
   product: ProductItem,
@@ -42,11 +44,18 @@ export const ProductRow = ({ product, index }: Props) => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, delay: index * 0.05 }}
     >
-      <div className="flex-row group flex border-b border-border/40 hover:bg-card/60 transition-all duration-200 pr-5">
+      <div className="flex-row group flex justify-between border-b border-border/40 hover:bg-card/60 transition-all duration-200 px-5 w-[100%]">
         <Link href={`/product-detail/${product.id}`} className="flex items-center gap-4 sm:gap-6 py-4 sm:py-5">
           <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-lg overflow-hidden bg-secondary flex-shrink-0 group-hover:ring-1 group-hover:ring-primary/30 transition-all">
             {product.image_url ? (
-              <img src={product.image_url} alt={`акумулятор_${product.name}`} className="w-full h-full object-cover" />
+              <Image
+                src={product.image_url}
+                alt={product.name}
+                title={product.name}
+                width={100}
+                height={100}
+                className="w-full h-full object-cover"
+              />
             ) : (
               <div className="w-full h-full flex items-center justify-center">
                 <Zap className="w-6 h-6 text-muted-foreground/30" />
@@ -84,10 +93,10 @@ export const ProductRow = ({ product, index }: Props) => {
 
         {product.in_stock && (
           <ButtonComponent
-          size="sm"
-          onClick={handleAddItem}
-          className="bg-secondary hover:bg-primary hover:text-primary-foreground text-foreground h-9 w-9 p-0 haptic-btn transition-colors cursor-pointer"
-        >
+            size="sm"
+            onClick={handleAddItem}
+            className="bg-secondary hover:bg-primary hover:text-primary-foreground text-foreground h-9 w-9 p-0 haptic-btn transition-colors cursor-pointer"
+          >
             <ShoppingCart className="w-4 h-4" />
           </ButtonComponent>
         )}

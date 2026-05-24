@@ -1,5 +1,4 @@
-/* eslint-disable @next/next/no-img-element */
-import { productCardItemPlaceholders, productCardSubFields, productCardTitleFields } from '@/api/constants/product';
+import { productCardItemPlaceholders, productCardSubFields, productCardTitleFields } from '@/lib/constants/product';
 import { ProductItem } from '@/db/generated/prisma/client';
 import { Button } from "@/lib/components/ui/button";
 import { ShoppingCart } from 'lucide-react';
@@ -8,6 +7,7 @@ import { motion } from 'framer-motion';
 import { useContext } from 'react';
 import { toast } from 'sonner';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const ButtonComponent: any = Button;
 
@@ -72,7 +72,14 @@ export const ProductCard = ({ ...productItem }: Props) => {
                     </div>
                 </Link>
                 <div className="w-[49%] flex flex-col gap-4 items-end">
-                    <img src={productItem.image_url as string} alt={`акумулятор_${productItem.name}`} />
+                    <Image
+                        src={productItem.image_url!}
+                        alt={productItem.name}
+                        title={productItem.name}
+                        width={100}
+                        height={100}
+                        className="w-full h-full object-cover"
+                    />
                     {productItem.in_stock && <ButtonComponent
                         size="sm"
                         onClick={handleAddItem}

@@ -1,29 +1,32 @@
 "use client";
 
 import { useContext, useState } from "react";
+import Link from "next/link";
 import { Button } from "@/lib/components/ui/button";
 import { Input } from "@/lib/components/ui/input";
 import { Label } from "@/lib/components/ui/label";
 import { Textarea } from "@/lib/components/ui/textarea";
+import { Checkbox } from "@/lib/components/ui/checkbox";
 import { ArrowLeft, ArrowRight, Package, CreditCard, Check, Loader2, Zap } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 import { createNewCartOrder } from "@/api/server-actions/cart.actions";
 import { CartContext } from "@/lib/context/CartContext";
-import { useAuthenticatedUser } from "@/lib/hooks/useAuthenticatedUser";
-import Link from "next/link";
-
-const STEPS = ['SHIPPING', 'REVIEW', 'CONFIRM'];
+import { createUser, getUserByAttr } from "@/api/server-actions/user.actions";
+import { confirmOrderSteps } from "@/lib/constants/website";
 
 const ButtonComponent: any = Button;
 const LabelComponent: any = Label;
 const InputComponent: any = Input;
 const TextareaComponent: any = Textarea;
+const CheckboxComponent: any = Checkbox;
 
 export default function CheckoutPage() {
-  const { user } = useAuthenticatedUser();
   const { clearCart, cartItems } = useContext(CartContext);
   const [step, setStep] = useState(0);
+  const [contactUserPhone, setContactUserPhone] = useState("");
+  const [existsContactId, setExistsContactId] = useState<number>();
+  const [rememberMyProfile, setRememberMyProfile] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [shippingContactForm, setShippingContactForm] = useState({
     full_name: '',
@@ -49,7 +52,7 @@ export default function CheckoutPage() {
     shippingContactForm.city &&
     shippingContactForm.country;
   const canProceed = step === 0
-    ? !!user || contactFieldsFilled
+    ? contactFieldsFilled
     : true;
 
   const handleSubmit = async () => {
@@ -59,12 +62,37 @@ export default function CheckoutPage() {
       shippingContactInfo: shippingContactForm,
       items: cartItems,
     };
-    await createNewCartOrder(values, user);
-    
+    await createNewCartOrder(values, existsContactId);
+  
+    if (rememberMyProfile) {
+      await createUser({
+        email: shippingContactForm.email,
+        full_name: shippingContactForm.full_name,
+        phone: shippingContactForm.phone,
+        home_address: shippingContactForm.home_address,
+        country: shippingContactForm.country,
+        zip_code: shippingContactForm.zip_code,
+        password: "",
+      });
+    }
+
     clearCart();
     setStep(2);
     setSubmitting(false);
-    toast.success('Order placed successfully!');
+    toast.success('Замовлення створене успішно!');
+  };
+
+  const handleLookupUserByPhone = async () => {
+    const userInfo = await getUserByAttr('phone', contactUserPhone);
+
+    if (!!userInfo) {
+      setShippingContactForm({
+        ...userInfo,
+        notes: "",
+        city: userInfo.city || "",
+      } as any);
+      setExistsContactId(userInfo!.id);
+    }
   };
 
   if (cartItems.length === 0 && step < 2) {
@@ -94,7 +122,7 @@ export default function CheckoutPage() {
         <p className="font-mono text-sm text-muted-foreground mb-8">Кроки активації</p>
 
         <div className="flex items-center gap-2 mb-10">
-          {STEPS.map((s, i) => (
+          {confirmOrderSteps.map((s, i) => (
             <div key={s} className="flex items-center gap-2">
               <div className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border text-xs font-mono tracking-wider transition-all ${
                 i <= step
@@ -104,7 +132,7 @@ export default function CheckoutPage() {
                 {i < step ? <Check className="w-3 h-3" /> : <span className="w-3 text-center">{i + 1}</span>}
                 <span className="hidden sm:inline">{s}</span>
               </div>
-              {i < STEPS.length - 1 && (
+              {i < confirmOrderSteps.length - 1 && (
                 <div className={`w-8 h-px ${i < step ? 'bg-primary' : 'bg-border'}`} />
               )}
             </div>
@@ -124,6 +152,25 @@ export default function CheckoutPage() {
                 <h2 className="font-heading font-semibold text-lg mb-6 flex items-center gap-2">
                   <Package className="w-5 h-5 text-primary" />Контактна інформація про замовника
                 </h2>
+  
+                <div className="flex flex-row gap-2 items-center justify-between py-5">
+                  <p className="text-xs w-[40%]">
+                    Вже купували раніше? Підтягнути профайл за номером телефону
+                  </p>
+                  <div className="flex flex-row justify-start w-[60%] items-center gap-2">
+                    <LabelComponent className="text-xs font-mono text-muted-foreground">Номер телефону *</LabelComponent>
+                    <InputComponent
+                      search={true}
+                      handleSearch={handleLookupUserByPhone}
+                      value={contactUserPhone}
+                      onChange={(e: any) => {
+                        setContactUserPhone(e.target.value);
+                      }}
+                      className="bg-secondary border-border font-mono"
+                    />
+                  </div>
+                </div>
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <LabelComponent className="text-xs font-mono text-muted-foreground">Повне імя *</LabelComponent>
@@ -158,15 +205,28 @@ export default function CheckoutPage() {
                     <TextareaComponent value={shippingContactForm.notes} onChange={(e: any) => updateField('notes', e.target.value)} className="bg-secondary border-border font-mono" rows={3} />
                   </div>
                 </div>
-              </div>
 
-              <ButtonComponent
-                onClick={() => setStep(1)}
-                disabled={!canProceed}
-                className="w-full h-12 bg-primary text-primary-foreground font-heading font-bold tracking-wider haptic-btn gap-2"
-              >
-                Підтвердити контакти<ArrowRight className="w-4 h-4" />
-              </ButtonComponent>
+                {!existsContactId && <div className="flex flex-row gap-2 items-center justify-between py-5">
+                  <p className="font-semibold text-sm">
+                    {"Запам'ятати мої контакти"}
+                  </p>
+                  <CheckboxComponent
+                    name="rememberMyProfile"
+                    value={rememberMyProfile}
+                    onCheckedChange={(isChecked: boolean) => {
+                      setRememberMyProfile(isChecked);
+                    }}
+                  />
+                </div>}
+
+                <ButtonComponent
+                  onClick={() => setStep(1)}
+                  disabled={!canProceed}
+                  className="mt-10 w-full h-12 bg-primary text-primary-foreground font-heading font-bold tracking-wider haptic-btn gap-2"
+                >
+                  Підтвердити контакти<ArrowRight className="w-4 h-4" />
+                </ButtonComponent>
+              </div>
             </motion.div>
           )}
 
@@ -224,7 +284,7 @@ export default function CheckoutPage() {
                   className="flex-2 h-12 bg-primary text-primary-foreground font-heading font-bold tracking-wider haptic-btn gap-2"
                 >
                   {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Zap className="w-4 h-4" />}
-                  {submitting ? "Створюємо..." : "Фіналізувати"}
+                  {submitting ? "створюємо..." : "Фіналізувати"}
                 </ButtonComponent>
               </div>
             </motion.div>
@@ -246,7 +306,7 @@ export default function CheckoutPage() {
               </p>
               <Link href="/products">
                 <ButtonComponent className="bg-primary text-primary-foreground font-heading font-bold tracking-wider haptic-btn gap-2">
-                  Продовжити <ArrowRight className="w-4 h-4" />
+                   <ArrowRight className="w-4 h-4" />
                 </ButtonComponent>
               </Link>
             </motion.div>

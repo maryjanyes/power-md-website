@@ -1,6 +1,5 @@
 'use server';
 
-import { User } from '@/db/generated/prisma/client';
 import { prisma } from '@/lib/prisma';
 import { CartOrderPayload } from '@/lib/types/cart.types';
 import Nodemailer from 'nodemailer';
@@ -19,33 +18,30 @@ const getTransportInstance = () => {
   return transportInstance;
 };
 
-export async function createNewCartOrder(cartOrderPayload: CartOrderPayload, user?: User) {
+export async function createNewCartOrder(cartOrderPayload: CartOrderPayload, existsUserId?: number) {
   let shippingContactId = null;
-  const { shippingContactInfo } = cartOrderPayload;
+  const { shippingContactInfo, items } = cartOrderPayload;
 
-  if (!user?.id) {
+  if (!existsUserId) {
     shippingContactId = (await prisma.cartOrderShipping.create({
-      data: {
-        phone: shippingContactInfo.phone,
-        home_address: shippingContactInfo.home_address,
-        city: shippingContactInfo.city,
-        country: shippingContactInfo.country,
-        full_name: shippingContactInfo.full_name,
-        zip_code: shippingContactInfo.zip_code,
-      },
+      data: ({
+        ...shippingContactInfo,
+        email: undefined,
+        notes: undefined,
+      } as any),
     })).id;
   }
 
   const newCartOrder = await prisma.cartOrder.create({
     data: {
-      ...(user?.id ? {
-        contact_user_id: user.id,
+      ...(existsUserId ? {
+        contact_user_id: existsUserId,
       } : {
         contact_shipping_id: shippingContactId,
       }),
     },
   });
-  const cartOrderItemsToAdd = cartOrderPayload.items.map((item) => ({
+  const cartOrderItemsToAdd = items.map((item) => ({
     quantity: item.quantity,
     product_id: item.product_id,
     cart_order_id: newCartOrder.id,
@@ -56,9 +52,19 @@ export async function createNewCartOrder(cartOrderPayload: CartOrderPayload, use
   const transport = getTransportInstance();
   const emailParams = {
     from: `"Power.UKR" <power_ukr.support@gmail.com>`,
-    to: user?.email || shippingContactInfo.email,
-    subject: `Нове замовлення #(${newCartOrder.id})`,
-    html: `<div><p>Ваше замовлення відправлено в обробку. Очікуйте на дзвінок менеджера.</p></div>`
+    to: shippingContactInfo.email,
+    subject: `Нове замовлення #${newCartOrder.id}`,
+    html: `
+      <div style="padding: 10px;">
+        <span style="font-weight: bold; font-size: 20px;">Вітаємо, ваше замовлення: </span>
+        <ul style="padding-inline: 0px; margin-block-start: 0px; margin-top: 10px;">
+          ${cartOrderItemsToAdd.reduce((acc, item, itemId) => {
+            return acc+= `<li><span>Кількість: ${item.quantity}</span><br /><span>Позиція: ${items[itemId].product_name}</span></li>`;
+          }, "")}
+        </ul>
+        <span style="font-size: 16px;">Очікуйте на дзвінок менеджера.</span>
+      </div>
+    `
   }
   await transport.sendMail(emailParams);
 

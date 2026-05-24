@@ -1,6 +1,6 @@
 'use client';
 
-import { productTypeCategories } from '@/api/constants/categories';
+import { productTypeCategories } from '@/lib/constants/categories';
 import { Zap } from 'lucide-react';
 import Link from 'next/link';
 

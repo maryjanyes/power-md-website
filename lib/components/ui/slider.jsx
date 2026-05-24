@@ -1,7 +1,14 @@
 import * as RadixSlider from "@radix-ui/react-slider";
 import { useState } from "react";
 
-export function Slider({ placeholder = "", rangeMin = 0, rangeMax = 10000, symbol = "₴" }) {
+export function Slider({
+    placeholder = "",
+    rangeMin = 0,
+    rangeMax = 10000,
+    symbol = "₴",
+    currentRangeValue,
+    onChange,
+}) {
     const [currentRange, setCurrentRange] = useState([0, 1000]);
 
     return (
@@ -9,14 +16,17 @@ export function Slider({ placeholder = "", rangeMin = 0, rangeMax = 10000, symbo
             <div className="flex justify-between mb-4 text-sm font-medium">
                 <span>{placeholder}</span>
                 <span className="text-secondary-foreground">
-                    {symbol}{currentRange[0]} - {symbol}{currentRange[1]}
+                    {symbol}{(currentRangeValue?.min) || currentRange[0]} - {symbol}{(currentRangeValue?.max || currentRange[1])}
                 </span>
             </div>
       
             <RadixSlider.Root
                 className="relative flex items-center select-none touch-none w-full h-5"
-                value={currentRange}
-                onValueChange={setCurrentRange}
+                value={currentRangeValue ? [currentRangeValue.min, currentRangeValue.max] : currentRange}
+                onValueChange={(val) => {
+                    onChange(val);
+                    setCurrentRange(val);
+                }}
                 min={rangeMin}
                 max={rangeMax}
                 step={1}

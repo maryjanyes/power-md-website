@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import { useContext, useState } from 'react';
@@ -6,9 +5,10 @@ import { ShoppingCart, ArrowLeft, Zap, Shield, ThermometerSun, RefreshCw, Minus,
 import { toast } from 'sonner';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useProducts } from '@/lib/hooks/useProducts';
 import { SpecCard } from '@/lib/components/products/SpecCard';
-import { chemistryColors } from '@/api/constants/colors';
+import { chemistryColors } from '@/lib/constants/colors';
 import { CartContext } from '@/lib/context/CartContext';
 import { useParams } from 'next/navigation';
 import { Button } from "@/lib/components/ui/button";
@@ -83,7 +83,12 @@ export default function ProductDetailPage() {
             className="relative aspect-square rounded-2xl overflow-hidden bg-card border border-border"
           >
             {productById.image_url ? (
-              <img src={productById.image_url} alt={`акумулятор_${productById.name}`} className="w-full h-full object-cover" />
+              <Image
+                src={productById.image_url}
+                alt={productById.name}
+                title={productById.name} 
+                className="w-full h-full object-cover"
+              />
             ) : (
               <div className="w-full h-full flex items-center justify-center">
                 <Zap className="w-20 h-20 text-muted-foreground/20" />

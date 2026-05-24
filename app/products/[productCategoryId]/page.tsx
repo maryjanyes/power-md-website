@@ -1,6 +1,6 @@
 'use client';
 
-import { productivityIndex } from "@/api/constants/categories";
+import { productivityIndex } from "@/lib/constants/categories";
 import { ProductRow } from "@/lib/components/products/ProductRow";
 import { useProducts } from "@/lib/hooks/useProducts";
 import { useParams } from "next/navigation";

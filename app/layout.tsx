@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { AppLayout } from "@/lib/components/layout/AppLayout";
-import { companyWebsiteMetaDescription, companyWebsiteMetaTitle } from "@/api/constants/website";
+import { companyWebsiteMetaDescription, companyWebsiteMetaTitle, companyWebsiteDeployUrl } from "@/lib/constants/website";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -19,6 +19,15 @@ export const metadata: Metadata = {
   description: companyWebsiteMetaDescription,
 };
 
+const metatags = {
+  "og:title": "Акумулятори для авто, мотоциклів популярних виробників",
+  "og:description": "Акумулятори для авто, мотоциклів популярних виробників (Bosch, Ista, Maxion, Forse, Oberon, Moll)",
+  "keywords": "акумулятори, батареї, авто товари, купити акумулятор для авто/мото, авто товари Україна",
+  "description": "Акумулятори для авто, мотоциклів популярних виробників (Bosch, Ista, Maxion, Forse, Oberon, Moll)",
+  "og:url": companyWebsiteDeployUrl,
+  "og:locale": "ua",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -30,7 +39,9 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <head>
-        {/** something */}
+        {Object.keys(metatags).map((tag) => (
+          <meta name={tag} content={(metatags as any)[tag]} key={tag} />
+        ))}
       </head>
       <body className="min-h-full">
         <AppLayout>

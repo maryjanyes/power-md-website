@@ -1,10 +1,10 @@
-/* eslint-disable @next/next/no-img-element */
 'use client';
 
+import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { useFeaturedProducts } from '@/lib/hooks/useFeaturedProducts';
-import { ProductCard } from '../products/ProductCard';
 import { useContext, useMemo } from 'react';
+import { useFeaturedProducts } from '@/lib/hooks/useFeaturedProducts';
+import { ProductCard } from '@/lib/components/products/ProductCard';
 import { ProductContext } from '@/lib/context/ProductContext';
 
 export default function HeroSection() {
@@ -15,9 +15,12 @@ export default function HeroSection() {
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden pl-60">
       <div className="absolute inset-0">
-        <img
+        <Image
+          width={100}
+          height={100}
           src="https://media.base44.com/images/public/6a088c4792d18435606e7c42/634cbf6d7_generated_80e52798.png"
-          alt="Banner BG"
+          alt="Power.UKR - акумулятори для будь-яких задач"
+          title="Power.UKR - акумулятори для будь-яких задач"
           className="w-full h-full object-cover opacity-40"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-background/40" />
