@@ -2,18 +2,15 @@
 
 import { useContext, useMemo } from 'react';
 import { useParams } from 'next/navigation';
-import { Search } from 'lucide-react';
-import { Input } from "@/lib/components/ui/input";
 import { Skeleton } from "@/lib/components/ui/skeleton";
 import { ProductContext } from '@/lib/context/ProductContext';
 import { ProductFilters } from '@/lib/components/products/ProductFilters';
 import { ProductRow } from '@/lib/components/products/ProductRow';
-
-const InputComponent: any = Input;
+import { ProductSearch } from '@/lib/components/products/ProductSearch';
 
 export default function ProductsPage() {
   const { category } = useParams();
-  const { setProductFilters, productFilters, rawProducts, isRawProductsLoadingInProgress } = useContext(ProductContext);
+  const { rawProducts, isRawProductsLoadingInProgress } = useContext(ProductContext);
 
   const renderProductsWithFilters = useMemo(() => {
     if (isRawProductsLoadingInProgress) {
@@ -38,44 +35,36 @@ export default function ProductsPage() {
         <p className="font-mono text-muted-foreground text-xl">Товарів не знайдено</p>
       </div>
     ) : (
-      <div className="flex flex-row gap-2 w-[100%] px-5">
-        {rawProducts.map((product, index) => (
-          <ProductRow product={product} key={index} index={index} />
-        ))}
+        <div className="flex flex-row flex-wrap gap-4 w-[100%] pl-4">
+          {rawProducts.map((product, index) => (
+            <ProductRow product={product} key={index} index={index} />
+          ))}
       </div>
     );
   }, [rawProducts, isRawProductsLoadingInProgress]);
 
   return (
-    <div className="min-h-screen pt-24 sm:pt-28 pb-20 pl-40">
-        <div className="mb-8 sm:mb-12 pl-4">
-          <h1 className="font-heading font-bold text-1xl sm:text-4xl md:text-5xl tracking-tight">
-            {category ? `категорія: ${category}` : ''} <span className="text-muted-foreground">Усі товари</span>
-          </h1>
-        </div>
+    <div className="min-h-screen pt-50 sm:pt-28 pb-20 w-full">
+      <div className="mb-8 sm:mb-12 pl-4">
+        <h1 className="font-heading font-bold text-1xl sm:text-4xl md:text-5xl tracking-tight">
+          {category ? `категорія: ${category}` : ''} <span className="text-muted-foreground">Усі товари</span>
+        </h1>
+      </div>
 
-        <div className="flex flex-col sm:flex-row gap-3 mb-8 p-4 rounded-xl border border-border bg-card/40 backdrop-blur-sm">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-            <InputComponent
-              placeholder="Пошук (виробник, назва)..."
-              value={productFilters.search}
-              onChange={(e: any) => setProductFilters('search', e.target.value)}
-              className="pl-10 bg-secondary border-border font-mono text-sm"
-            />
-          </div>
-        </div>
+      <div className="flex flex-col sm:flex-row gap-3 mb-8 p-4 rounded-xl border border-border bg-card/40 backdrop-blur-sm">
+        <ProductSearch />
+      </div>
 
-        <p className="text-xs font-mono text-muted-foreground mb-4 tracking-wider">
-          {isRawProductsLoadingInProgress ? 'завантаження...' : rawProducts.length} результати
-        </p>
+      <p className="text-xs font-mono text-muted-foreground mb-4 tracking-wider">
+        {isRawProductsLoadingInProgress ? 'завантаження...' : rawProducts.length} результати
+      </p>
 
-        <div className="rounded-xl border border-border overflow-hidden bg-card/20">
-          <div className="flex flex-row justify-between py-5">
-            <ProductFilters />
-            {renderProductsWithFilters}
-          </div>
+      {!isRawProductsLoadingInProgress && <div className="rounded-xl border border-border overflow-hidden bg-card/20">
+        <div className="flex flex-col xl:flex-row! justify-between p-3">
+          <ProductFilters />
+          {renderProductsWithFilters}
         </div>
+      </div>}
     </div>
   );
 }

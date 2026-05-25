@@ -12,7 +12,7 @@ export function Slider({
     const [currentRange, setCurrentRange] = useState([0, 1000]);
 
     return (
-        <div className="w-full max-w-sm p-6 bg-primary-foreground rounded-lg shadow">
+        <div className="w-full max-w-sm py-2 bg-primary-foreground rounded-lg shadow">
             <div className="flex justify-between mb-4 text-sm font-medium">
                 <span>{placeholder}</span>
                 <span className="text-secondary-foreground">

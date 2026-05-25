@@ -10,10 +10,10 @@ import { ProductContext } from '@/lib/context/ProductContext';
 export default function HeroSection() {
   const { rawProducts } = useContext(ProductContext);
   const { productsFeatured: productsFeaturedIds } = useFeaturedProducts();
-  const products = useMemo(() => rawProducts.filter((product) => !!productsFeaturedIds.includes(product.id)), [rawProducts, productsFeaturedIds]);
+  const featuredProducts = useMemo(() => rawProducts.filter((product) => !!productsFeaturedIds.includes(product.id)), [rawProducts, productsFeaturedIds]);
 
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden pl-60">
+    <section className="relative min-h-screen flex items-center overflow-hidden">
       <div className="absolute inset-0">
         <Image
           width={100}
@@ -50,7 +50,7 @@ export default function HeroSection() {
         <div className="mt-10">
           <p className="text-xl font-mono text-primary">Знижки і ТОП продажів 🔥</p>
           <div className="flex flex-row flex-wrap w-full gap-5 mt-5">
-            {products.map((product, productId) => (
+            {featuredProducts.map((product, productId) => (
               <ProductCard {...product} key={productId} />
             ))}
           </div>

@@ -34,10 +34,22 @@ export const productFilterCategories = [{
 //     name: "weight_kg",
 // }
 
+const getAValuesInRange = (start = 20, end = 3500) => {
+    let current = start;
+    const values = [];
+    
+    while (current < end) {
+        current += 5;
+        values.push(current);
+    }
+
+    return values;
+};
+
 export const productCategoryFilterValues = {
     brand: ["bosch", "maxion", "forse", "ista", "moll", "exide", "varta"],
     capacity_ah: new Array(265).fill(null).map((_, aH_index) => aH_index),
-    starting_current_a: [],
+    starting_current_a: getAValuesInRange(),
     polarity: ["L", "R"],
     voltage: [12, 24, 36, 48],
     terminal_category: ["AGM", "GEL"],

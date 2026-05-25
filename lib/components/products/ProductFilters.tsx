@@ -90,7 +90,7 @@ export const ProductFilters = () => {
   };
 
   return (
-    <div className="flex flex-col gap-4 pl-4">
+    <div className="flex flex-col gap-4 w-[100%] xl:w-[20%]!">
       {productFilterCategories.map((category) => {
         const Arrow = (filtersToggleState as any)?.[category.name] ? ArrowDown : ArrowUp;
 

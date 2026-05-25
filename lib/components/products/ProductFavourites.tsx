@@ -1,7 +1,7 @@
 import { ProductContext } from "@/lib/context/ProductContext";
 import { useContext } from "react";
 
-export const ProductDailyFavourites = () => {
+export const ProductFavourites = () => {
     const { productDailyFavourites, rawProducts } = useContext(ProductContext);
     
     return !!productDailyFavourites && (

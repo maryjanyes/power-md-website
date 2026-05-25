@@ -132,11 +132,13 @@ export const AppLayout = ({ children }: Props) => {
       }}>
         <div className="min-h-screen bg-background">
           <ChargeStateIndicator />
-          <Navbar onCartOpen={handleCartOpen} />
-          <CartDrawer open={cartOpen} onOpenChange={handleCartOpen} onCloseChange={handleCartClose} />
-            <main>
+          <div className="flex flex-col sm:flex-row!">
+            <Navbar onCartOpen={handleCartOpen} />
+            <CartDrawer open={cartOpen} onOpenChange={handleCartOpen} onCloseChange={handleCartClose} />
+            <main style={{ maxWidth: "85%" , width: "100%"}}>
               {children}
             </main>
+          </div>
           <Footer />
         </div>
       </CartProvider>

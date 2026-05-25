@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useContext, useEffect, useCallback } from 'react';
-import { ShoppingCart, Menu, X, Zap } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { ShoppingCart, Zap } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { CartContext } from '@/lib/context/CartContext';
 import Link from 'next/link';
 import { companyName } from '@/lib/constants/website';
@@ -19,7 +19,6 @@ const navLinks = [
 export const Navbar = ({ onCartOpen }: Props) => {
   const { cartItems } = useContext(CartContext);
   const [scrolled, setScrolled] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
 
   const setUpScrollEv = useCallback(() => {
     const handler = () => setScrolled(window.scrollY > 40);
@@ -36,8 +35,8 @@ export const Navbar = ({ onCartOpen }: Props) => {
   }, [setUpScrollEv]);
 
   return (
-    <nav className={`absolute top-0 left-0 right-0 z-50 duration-300 w-[10%] ${scrolled ? 'bg-background/90 backdrop-blur-xl border-b border-border' : 'bg-transparent'}`}>
-      <div className="max-w-7xl mx-auto p-5 bg-primary-foreground">
+    <nav className={`relative md:w-[15%]! w-[40%] h-[200px] sm:h-auto duration-300 ${scrolled ? 'bg-background/90 backdrop-blur-xl border-b border-border' : 'bg-transparent'}`}>
+      <div className="max-w-7xl mx-auto p-5 h-0 sm:h-auto bg-primary-foreground">
         <div className="flex flex-col gap-3 h-[100vh]">
           <Link href="/" className="flex items-center gap-4">
             <Zap className="w-10 h-10 text-primary transition-transform group-hover:scale-110" />
@@ -46,7 +45,7 @@ export const Navbar = ({ onCartOpen }: Props) => {
             </span>
           </Link>
 
-          <div className="flex flex-col items-start h-[100%]">
+          <div className="flex flex-col items-start">
             {navLinks.map(link => (
               <Link
                 key={link.to}
@@ -67,7 +66,7 @@ export const Navbar = ({ onCartOpen }: Props) => {
             <div className="flex items-center gap-4 mt-5">
               <button
                 onClick={onCartOpen}
-                className="relative p-2 hover:bg-secondary rounded-lg transition-colors haptic-btn"
+                className="relative p-2 hover:bg-secondary rounded-lg transition-colors haptic-btn cursor-pointer"
               >
                 <ShoppingCart className="w-5 h-5 text-muted-foreground" />
                 {cartItems.length > 0 && (
@@ -80,47 +79,10 @@ export const Navbar = ({ onCartOpen }: Props) => {
                   </motion.span>
                 )}
               </button>
-              <button
-                className="md:hidden p-2 hover:bg-secondary rounded-lg transition-colors"
-                onClick={() => setMobileOpen(!mobileOpen)}
-              >
-                {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-              </button>
             </div>
           </div>
         </div>
       </div>
-
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-background/95 backdrop-blur-xl border-b border-border overflow-hidden"
-          >
-            <div className="flex-col gap-2 px-4 py-4 space-y-1">
-              {navLinks.map(link => (
-                <Link
-                  key={link.to}
-                  href={link.to}
-                  onClick={() => setMobileOpen(false)}
-                  className="block px-4 py-3 text-sm font-mono text-muted-foreground hover:text-primary hover:bg-secondary rounded-lg transition-colors"
-                >
-                  {link.label}
-                </Link>
-              ))}
-              <Link
-                href="/products"
-                onClick={() => setMobileOpen(false)}
-                className="block px-4 py-3 text-sm font-mono text-muted-foreground hover:text-foreground hover:bg-secondary rounded-lg transition-colors"
-              >
-                Усі товари
-              </Link>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </nav>
   );
 }

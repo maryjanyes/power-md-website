@@ -84,6 +84,8 @@ export default function ProductDetailPage() {
           >
             {productById.image_url ? (
               <Image
+                width={100}
+                height={100}
                 src={productById.image_url}
                 alt={productById.name}
                 title={productById.name} 
@@ -167,7 +169,7 @@ export default function ProductDetailPage() {
             <ButtonComponent
               onClick={handleAddProductToCart}
               disabled={!productById.in_stock}
-              className="bg-primary text-primary-foreground font-heading font-bold haptic-btn gap-2 h-11 px-6"
+              className="bg-primary text-primary-foreground font-heading font-bold haptic-btn gap-2 h-11 px-6 cursor-pointer"
             >
               {productAdded ? <Check className="w-4 h-4" /> : <ShoppingCart className="w-4 h-4" />}
               {productAdded ? 'додано' : 'додати в кошик'}

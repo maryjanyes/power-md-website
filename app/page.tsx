@@ -4,10 +4,10 @@ import FeaturesStrip from '@/lib/components/home/FeaturesStrip';
 
 export default function Home() {
   return (
-    <div>
+    <>
       <HeroSection />
       <FeaturesStrip />
       <CategoryShowcase />
-    </div>
+    </>
   );
 }

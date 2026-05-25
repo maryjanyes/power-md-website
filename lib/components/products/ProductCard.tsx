@@ -37,7 +37,7 @@ export const ProductCard = ({ ...productItem }: Props) => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.5 }}
-            className="p-8 rounded-xl border border-border bg-card/60 backdrop-blur-sm w-[49%]"
+            className="p-8 rounded-xl border border-border bg-card/60 backdrop-blur-sm w-[100%] md:w-[49%]!"
         >
             <div className="flex flex-row gap-1">
                 <Link href={`/product-detail/${productItem.id}`} className="w-[50%]">
@@ -80,13 +80,15 @@ export const ProductCard = ({ ...productItem }: Props) => {
                         height={100}
                         className="w-full h-full object-cover"
                     />
-                    {productItem.in_stock && <ButtonComponent
-                        size="sm"
-                        onClick={handleAddItem}
-                        className="bg-secondary hover:bg-primary hover:text-primary-foreground text-foreground h-9 w-9 p-0 haptic-btn transition-colors cursor-pointer"
+                    {productItem.in_stock && (
+                        <ButtonComponent
+                            size="sm"
+                            onClick={handleAddItem}
+                            className="bg-secondary hover:bg-primary hover:text-primary-foreground text-foreground h-9 w-9 p-0 haptic-btn transition-colors cursor-pointer"
                         >
                         <ShoppingCart className="w-4 h-4" />
-                    </ButtonComponent>}
+                        </ButtonComponent>
+                    )}
                 </div>
             </div>
         </motion.div>

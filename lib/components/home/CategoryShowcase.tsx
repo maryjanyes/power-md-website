@@ -15,7 +15,7 @@ export default function CategoryShowcase() {
         </div>
 
         <div className="space-y-px">
-          <div className="grid grid-cols-3 gap-px">
+          <div className="grid grid-cols-1 md:grid-cols-2! gap-x-6">
             {productTypeCategories.map((category) => (
               <CategoryItem {...category} key={category.name} />
             ))}

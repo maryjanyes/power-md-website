@@ -39,12 +39,12 @@ export const ProductRow = ({ product, index }: Props) => {
 
   return (
     <motion.div
-      className="w-[50%]"
+      className="w-[100%] xl:w-[49%]!"
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, delay: index * 0.05 }}
     >
-      <div className="flex-row group flex justify-between border-b border-border/40 hover:bg-card/60 transition-all duration-200 px-5 w-[100%]">
+      <div className="flex-row flex gap-5 border-b border-border/40 hover:bg-card/60 transition-all duration-200 w-[100%]">
         <Link href={`/product-detail/${product.id}`} className="flex items-center gap-4 sm:gap-6 py-4 sm:py-5">
           <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-lg overflow-hidden bg-secondary flex-shrink-0 group-hover:ring-1 group-hover:ring-primary/30 transition-all">
             {product.image_url ? (
