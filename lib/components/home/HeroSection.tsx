@@ -27,7 +27,7 @@ export default function HeroSection() {
         <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/60" />
       </div>
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-20 w-full">
+      <div className="relative mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-20 w-full">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -47,7 +47,7 @@ export default function HeroSection() {
             PRECISION<br/><span className="text-primary">ENGINEERED</span><br/>POWER
           </motion.h1>
           
-        <div className="mt-10">
+        <div className="mt-10 w-full">
           <p className="text-xl font-mono text-primary">Знижки і ТОП продажів 🔥</p>
           <div className="flex flex-row flex-wrap w-full gap-5 mt-5">
             {featuredProducts.map((product, productId) => (

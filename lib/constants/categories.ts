@@ -48,7 +48,7 @@ const getAValuesInRange = (start = 20, end = 3500) => {
 
 export const productCategoryFilterValues = {
     brand: ["bosch", "maxion", "forse", "ista", "moll", "exide", "varta"],
-    capacity_ah: new Array(265).fill(null).map((_, aH_index) => aH_index),
+    capacity_ah: new Array(265).fill(null).map((_, aH_index) => aH_index+1),
     starting_current_a: getAValuesInRange(),
     polarity: ["L", "R"],
     voltage: [12, 24, 36, 48],
