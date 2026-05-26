@@ -35,7 +35,7 @@ export const Navbar = ({ onCartOpen }: Props) => {
   }, [setUpScrollEv]);
 
   return (
-    <nav className={`relative md:w-[15%]! w-[40%] h-[200px] sm:h-auto duration-300 ${scrolled ? 'bg-background/90 backdrop-blur-xl border-b border-border' : 'bg-transparent'}`}>
+    <nav className={`relative md:w-[15%]! w-[40%] h-[300px] sm:h-auto duration-300 ${scrolled ? 'bg-background/90 backdrop-blur-xl border-b border-border' : 'bg-transparent'}`}>
       <div className="max-w-7xl mx-auto p-5 h-0 sm:h-auto bg-primary-foreground">
         <div className="flex flex-col gap-3 h-[100vh]">
           <Link href="/" className="flex items-center gap-4">

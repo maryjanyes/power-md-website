@@ -37,7 +37,7 @@ export const ProductCard = ({ ...productItem }: Props) => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.5 }}
-            className="p-8 rounded-xl border border-border bg-card/60 backdrop-blur-sm w-[100%] md:w-[49%]!"
+            className="md:p-8 rounded-xl border border-border bg-card/60 backdrop-blur-sm w-[100%] md:w-[49%]!"
         >
             <div className="flex flex-row gap-1">
                 <Link href={`/product-detail/${productItem.id}`} className="w-[50%]">
