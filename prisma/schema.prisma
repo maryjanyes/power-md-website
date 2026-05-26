@@ -61,6 +61,14 @@ model ProductFav {
   product_item ProductItem     @relation(fields: [product_item_id], references: [id]) 
 }
 
+model ProductItemReview {
+  id    Int     @id @default(autoincrement())
+  content    String
+  stars    Int 
+  product_item_id     Int
+  product_item     ProductItem     @relation(fields: [product_item_id], references: [id]) 
+}
+
 model ProductItem {
   id    Int     @id @default(autoincrement()) 
   name     String
@@ -82,6 +90,7 @@ model ProductItem {
   cart_order_items     CartOrderItem[]
   product_items_featured     ProductItemFeatured[]
   product_items_favs     ProductFav[]
+  product_reviews     ProductItemReview[]
 }
 
 model ProductItemFeatured {

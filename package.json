@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "seed": "ts-node prisma/seed.ts",
+    "seed": "prisma db seed",
     "postinstall": "prisma generate"
   },
   "dependencies": {

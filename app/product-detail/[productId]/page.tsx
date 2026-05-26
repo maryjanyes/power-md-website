@@ -14,6 +14,7 @@ import { useParams } from 'next/navigation';
 import { Button } from "@/lib/components/ui/button";
 import { Badge } from "@/lib/components/ui/badge";
 import { Skeleton } from "@/lib/components/ui/skeleton";
+import ProductReviews from '@/lib/components/products/ProductReviews';
 
 const ButtonComponent: any = Button;
 
@@ -73,7 +74,7 @@ export default function ProductDetailPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <Link href="/products" className="inline-flex items-center gap-2 text-xs font-mono text-muted-foreground hover:text-primary transition-colors mb-8">
           <ArrowLeft className="w-3.5 h-3.5" />
-          До каталогу
+          Каталог
         </Link>
 
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-16">
@@ -177,6 +178,8 @@ export default function ProductDetailPage() {
           </div>
         </div>
       </div>
+
+      <ProductReviews productId={Number(productId)} />
     </div>
   );
 }
