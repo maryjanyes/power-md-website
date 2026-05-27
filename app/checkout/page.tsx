@@ -39,7 +39,7 @@ export default function CheckoutPage() {
     notes: '',
   });
 
-  const updateField = (fieldName: string, fieldValue: string) => setShippingContactForm(prev => ({
+  const updateField = (fieldName: string, fieldValue: string) => setShippingContactForm((prev: any) => ({
     ...prev,
     [fieldName]: fieldValue,
   }));
@@ -153,14 +153,14 @@ export default function CheckoutPage() {
                   <Package className="w-5 h-5 text-primary" />Контактна інформація про замовника
                 </h2>
   
-                <div className="flex flex-row gap-2 items-center justify-between py-5">
-                  <p className="text-xs w-[40%]">
+                <div className="flex flex-col md:flex-row! gap-2 md:items-center justify-between py-5">
+                  <p className="text-xs w-auto md:w-[60%]!">
                     Вже купували раніше? Підтягнути профайл за номером телефону
                   </p>
-                  <div className="flex flex-row justify-start w-[60%] items-center gap-2">
+                  <div className="flex flex-row justify-start w-auto md:w-[60%] items-center gap-2">
                     <LabelComponent className="text-xs font-mono text-muted-foreground">Номер телефону *</LabelComponent>
                     <InputComponent
-                      search={true}
+                      isSearch
                       handleSearch={handleLookupUserByPhone}
                       value={contactUserPhone}
                       onChange={(e: any) => {

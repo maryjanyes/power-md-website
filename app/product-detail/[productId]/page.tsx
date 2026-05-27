@@ -1,6 +1,6 @@
 'use client';
 
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { ShoppingCart, ArrowLeft, Zap, Shield, ThermometerSun, RefreshCw, Minus, Plus, Check } from 'lucide-react';
 import { toast } from 'sonner';
 import { motion } from 'framer-motion';
@@ -19,14 +19,14 @@ import ProductReviews from '@/lib/components/products/ProductReviews';
 const ButtonComponent: any = Button;
 
 export default function ProductDetailPage() {
-  const { addCartItem } = useContext(CartContext);
+  const { addCartItem, updateCardItemQuantity, cartItems } = useContext(CartContext);
   const { productId } = useParams();
   const { productById } = useProducts({
     productId: Number(productId),
   });
-  const [productQuantity, setProductQuantity] = useState(1);
-  const [productAdded, setProductAdded] = useState(false);
-  
+  const cartItem = cartItems.find((item: any) => item.product_id === Number(productId));
+  const cartItemAdded = !!cartItem;
+
   const handleAddProductToCart = () => {
     if (!productById) {
       return;
@@ -37,12 +37,10 @@ export default function ProductDetailPage() {
       product_name: productById.name,
       price: productById.price,
       weight: productById.weight_kg,
-      quantity: productQuantity,
+      quantity: cartItem.quantity,
     });
   
-    setProductAdded(true);
-    toast.success(`${productById?.name} додано в корзину`, { description: `кількість: ${productQuantity}` });
-    setTimeout(() => setProductAdded(false), 10000);
+    toast.success(`${productById?.name} додано в корзину`, { description: `кількість: ${cartItem?.quantity}` });
   };
 
   if (!productById) {
@@ -151,17 +149,21 @@ export default function ProductDetailPage() {
             <p className="text-xs font-mono text-muted-foreground">{productById.capacity_ah} · {productById.voltage}V</p>
           </div>
           <div className="flex items-center gap-4 ml-auto">
-            <p className="text-xl font-heading font-bold text-primary">₴{productById.price}</p>
+            <p className="text-xl font-heading font-bold text-primary">₴{productById.price * cartItem?.quantity}</p>
             <div className="flex items-center gap-1 bg-secondary rounded-lg">
               <button
-                onClick={() => setProductQuantity(q => Math.max(1, q - 1))}
+                onClick={() => {
+                  updateCardItemQuantity(productId, Math.max(1, cartItem?.quantity - 1));
+                }}
                 className="p-2 hover:bg-accent rounded-l-lg transition-colors haptic-btn"
               >
                 <Minus className="w-4 h-4" />
               </button>
-              <span className="w-8 text-center text-sm font-mono">{productQuantity}</span>
+              <span className="w-8 text-center text-sm font-mono">{cartItem?.quantity}</span>
               <button
-                onClick={() => setProductQuantity(q => q + 1)}
+                onClick={() => {
+                  updateCardItemQuantity(productId, cartItem?.quantity + 1);
+                }}
                 className="p-2 hover:bg-accent rounded-r-lg transition-colors haptic-btn"
               >
                 <Plus className="w-4 h-4" />
@@ -172,8 +174,8 @@ export default function ProductDetailPage() {
               disabled={!productById.in_stock}
               className="bg-primary text-primary-foreground font-heading font-bold haptic-btn gap-2 h-11 px-6 cursor-pointer"
             >
-              {productAdded ? <Check className="w-4 h-4" /> : <ShoppingCart className="w-4 h-4" />}
-              {productAdded ? 'додано' : 'додати в кошик'}
+              {cartItemAdded ? <Check className="w-4 h-4" /> : <ShoppingCart className="w-4 h-4" />}
+              {cartItemAdded ? 'додано' : 'додати в кошик'}
             </ButtonComponent>
           </div>
         </div>

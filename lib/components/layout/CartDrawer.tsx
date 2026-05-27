@@ -50,7 +50,7 @@ export default function CartDrawer({ open, onOpenChange, onCloseChange }: Props)
             </div>
           ) : (
             <AnimatePresence>
-              {cartItems?.map(item => {
+              {cartItems?.map((item: any) => {
                 const product = getProduct(item.product_id);
                   
                 return !!product && (

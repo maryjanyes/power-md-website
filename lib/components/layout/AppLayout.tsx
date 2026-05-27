@@ -84,14 +84,14 @@ export const AppLayout = ({ children }: Props) => {
       productRangeFilters,
       productsFeatured,
       isRawProductsLoadingInProgress,
-      setProductRangeFilters: (name, value) => {
-        setProductRangeFilters((prev) => ({
+      setProductRangeFilters: (name: string, value: string) => {
+        setProductRangeFilters((prev: any) => ({
           ...prev,
           [name]: value,
         }));
       },
-      setProductFilters: (name, value) => {
-        setProductFilters((prev) => ({
+      setProductFilters: (name: string, value: string) => {
+        setProductFilters((prev: any) => ({
           ...prev,
           [name]: value,
         }));
@@ -101,24 +101,24 @@ export const AppLayout = ({ children }: Props) => {
     }}>
       <CartProvider value={{
         cartItems,
-        addCartItem: (orderItem) => {
-          setCartItems((prev) => {
-            if (prev.some((item) => item.product_id === orderItem.product_id)) {
-              return prev.map((item) => item.product_id === orderItem.product_id ? ({
+        addCartItem: (newOrderItem: any) => {
+          setCartItems((prev: any) => {
+            if (prev.some((item: any) => item.product_id === newOrderItem.product_id)) {
+              return prev.map((item: any) => item.product_id === newOrderItem.product_id ? ({
                 ...item,
                 quantity: item.quantity + 1,
               }) : item)
             } else {
-              return [...prev, orderItem];
+              return [...prev, newOrderItem];
             }
           });
         },
         clearCart: () => setCartItems([]),
-        removeCartItem: (productId) => {
-          setCartItems((prev) => prev.filter((i) => i.product_id !== productId))
+        removeCartItem: (productId: number) => {
+          setCartItems((prev: any) => prev.filter((item: any) => item.product_id !== productId))
         },
-        updateCardItemQuantity: (productId, newProductQuantity) => {
-          setCartItems((prev) => prev.map((item) => {
+        updateCardItemQuantity: (productId: number, newProductQuantity: number) => {
+          setCartItems((prev: any) => prev.map((item: any) => {
             if (item.product_id === productId) {
               return {
                 ...item,

@@ -40,10 +40,10 @@ export const ProductContext = createContext<{
     productsFeatured: number[],
     productFilters: ProductFiltersQuery,
     isRawProductsLoadingInProgress: boolean,
-    setProductFilters: (name: string, value: number[] | string) => void,
-    setProductRangeFilters: (name: string, value: number[] | string | any) => void,
-    setRawProducts: (data: ProductItem[]) => void,
-    setProductDailyFavourites: (data: ProductFav[]) => void,
+    setProductFilters?: (name: string, value: number[] | string) => void,
+    setProductRangeFilters?: (name: string, value: number[] | string | any) => void,
+    setRawProducts?: (data: ProductItem[]) => void,
+    setProductDailyFavourites?: (data: ProductFav[]) => void,
 }>({
     rawProducts: [],
     productDailyFavourites: [],
@@ -51,10 +51,10 @@ export const ProductContext = createContext<{
     isRawProductsLoadingInProgress: false,
     productFilters: defaultProductFilters,
     productRangeFilters: defaultProductRangeFilters,
-    setProductRangeFilters: () => {},
-    setProductFilters: () => {},
-    setRawProducts: () => {},
-    setProductDailyFavourites: () => {},
+    // setProductRangeFilters: () => {},
+    // setProductFilters: () => {},
+    // setRawProducts: () => {},
+    // setProductDailyFavourites: () => {},
 });
 
 export const ProductProvider = ProductContext.Provider;

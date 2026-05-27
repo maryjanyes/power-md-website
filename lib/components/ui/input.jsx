@@ -14,7 +14,7 @@ const Input = React.forwardRef(({ className, type, ...props }, ref) => {
         )}
         ref={ref}
       {...props} />
-      {!!props.search && (
+      {!!props.isSearch && (
         <div className="w-[10%] cursor-pointer" onClick={props.handleSearch}>
           <SearchIcon />
         </div>
