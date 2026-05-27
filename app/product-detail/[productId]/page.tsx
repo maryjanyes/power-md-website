@@ -31,16 +31,16 @@ export default function ProductDetailPage() {
     if (!productById) {
       return;
     }
-  
-    addCartItem({
-      product_id: productById.id,
-      product_name: productById.name,
-      price: productById.price,
-      weight: productById.weight_kg,
-      quantity: cartItem.quantity,
-    });
-  
-    toast.success(`${productById?.name} додано в корзину`, { description: `кількість: ${cartItem?.quantity}` });
+
+    if (!cartItemAdded) {
+      addCartItem({
+        product_id: productById.id,
+        product_name: productById.name,
+        price: productById.price,
+        weight: productById.weight_kg,
+        quantity: 0,
+      });
+    }
   };
 
   if (!productById) {
