@@ -1,16 +1,16 @@
 /* eslint-disable react-hooks/set-state-in-effect */
-'use client';
+"use client";
 
-import React, { useEffect, useState } from 'react';
-import { Navbar } from './Navbar';
-import CartDrawer from './CartDrawer';
-import ChargeStateIndicator from './ChargeStateIndicator';
-import Footer from './Footer';
-import { CartProvider } from '@/lib/context/CartContext';
-import { CartOrderItem } from '@/lib/types/cart.types';
-import { defaultProductFilters, defaultProductRangeFilters, ProductFiltersQuery, ProductProvider, ProductRangeFiltersQuery } from '@/lib/context/ProductContext';
-import { ProductFav, ProductItem } from '@/db/generated/prisma/client';
-import { getProductDailyFavourites, getProductFeatured, getProducts } from '@/api/server-actions/product.actions';
+import React, { useEffect, useState } from "react";
+import { Navbar } from "./Navbar";
+import CartDrawer from "./CartDrawer";
+import ChargeStateIndicator from "./ChargeStateIndicator";
+import Footer from "./Footer";
+import { CartProvider } from "@/lib/context/CartContext";
+import { CartOrderItem } from "@/lib/types/cart.types";
+import { defaultProductFilters, defaultProductRangeFilters, ProductFiltersQuery, ProductProvider, ProductRangeFiltersQuery } from "@/lib/context/ProductContext";
+import { ProductFav, ProductItem } from "@/db/generated/prisma/client";
+import { getProductDailyFavourites, getProductFeatured, getProducts } from "@/api/server-actions/product.actions";
 
 type Props = {
   children: React.ReactElement,
@@ -48,8 +48,8 @@ export const AppLayout = ({ children }: Props) => {
   };
 
   const injectScripts = () => {
-    const script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4';
+    const script = document.createElement("script");
+    script.src = "https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4";
     script.async = true;
 
     document.body.appendChild(script);

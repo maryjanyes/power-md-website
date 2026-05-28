@@ -4,6 +4,19 @@ import { productivityIndex } from "@/lib/constants/categories";
 import { ProductRow } from "@/lib/components/products/ProductRow";
 import { useProducts } from "@/lib/hooks/useProducts";
 import { useParams } from "next/navigation";
+import { Metadata } from "next";
+
+export async function generateMetadata({ params }: any): Promise<Metadata> {
+  const productCategoryId = (await params)['productCategoryId'];
+
+  return {
+    title: `Акумулятори для авто, мотоциклів популярних виробників категорії ${productCategoryId}`,
+    description: `Акумулятори для авто, мотоциклів популярних виробників для авто/мото (категорія: ${productCategoryId})`,
+    // openGraph: {
+    //   images: [product.image, ...previousImages],
+    // },
+  }
+}
 
 export default function ProductCategoryDetailPage() {
     const params = useParams();
@@ -23,7 +36,7 @@ export default function ProductCategoryDetailPage() {
                 </div>
                 <div className="space-y-1 py-4">
                     {(productsByCategory as [])?.length > 0 ? (
-                        productsByCategory!.map((product) => (
+                        productsByCategory!.map((product: any) => (
                             <ProductRow key={product.id} product={product} index={product.id} />
                         ))
                     ) : (
