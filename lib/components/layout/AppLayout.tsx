@@ -74,7 +74,6 @@ export const AppLayout = ({ children }: Props) => {
       productFilters,
       productRangeFilters,
       productsFeatured,
-      productDailyFavourites: [],
       isRawProductsLoadingInProgress,
       setProductRangeFilters: (name: string, value: number[] | string | any) => {
         setProductRangeFilters((prev: any) => ({

@@ -1,6 +1,6 @@
 'use client';
 
-import { ProductFav, ProductItem } from "@/db/generated/prisma/client";
+import { ProductItem } from "@/db/generated/prisma/client";
 import { createContext } from "react";
 
 export const defaultProductFilters = {
@@ -36,17 +36,14 @@ export interface ProductRangeFiltersQuery {
 export const ProductContext = createContext<{
     productRangeFilters: ProductRangeFiltersQuery,
     rawProducts: ProductItem[],
-    productDailyFavourites: ProductFav[],
     productsFeatured: number[],
     productFilters: ProductFiltersQuery,
     isRawProductsLoadingInProgress: boolean,
     setProductFilters?: (name: string, value: number[] | string) => void,
     setProductRangeFilters?: (name: string, value: number[] | string | any) => void,
     setRawProducts?: (data: ProductItem[]) => void,
-    setProductDailyFavourites?: (data: ProductFav[]) => void,
 }>({
     rawProducts: [],
-    productDailyFavourites: [],
     productsFeatured: [],
     isRawProductsLoadingInProgress: false,
     productFilters: defaultProductFilters,
