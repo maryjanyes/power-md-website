@@ -84,20 +84,18 @@ export const AppLayout = ({ children }: Props) => {
       productRangeFilters,
       productsFeatured,
       isRawProductsLoadingInProgress,
-      setProductRangeFilters: (name: string, value: string) => {
+      setProductRangeFilters: (name: string, value: number[] | string | any) => {
         setProductRangeFilters((prev: any) => ({
           ...prev,
           [name]: value,
         }));
       },
-      setProductFilters: (name: string, value: string) => {
+      setProductFilters: (name: string, value: number[] | string) => {
         setProductFilters((prev: any) => ({
           ...prev,
           [name]: value,
         }));
       },
-      setProductDailyFavourites: () => {},
-      setRawProducts: () => {}
     }}>
       <CartProvider value={{
         cartItems,

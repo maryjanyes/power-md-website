@@ -14,7 +14,7 @@ export function ProductSearch() {
             <InputComponent
               placeholder="Пошук (виробник, назва)..."
               value={productFilters.search}
-              onChange={(e: any) => setProductFilters('search', e.target.value)}
+              onChange={(e: any) => setProductFilters?.('search', e.target.value)}
               className="pl-10 bg-secondary border-border font-mono text-sm"
             />
           </div>

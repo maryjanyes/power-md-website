@@ -51,10 +51,6 @@ export const ProductContext = createContext<{
     isRawProductsLoadingInProgress: false,
     productFilters: defaultProductFilters,
     productRangeFilters: defaultProductRangeFilters,
-    // setProductRangeFilters: () => {},
-    // setProductFilters: () => {},
-    // setRawProducts: () => {},
-    // setProductDailyFavourites: () => {},
 });
 
 export const ProductProvider = ProductContext.Provider;

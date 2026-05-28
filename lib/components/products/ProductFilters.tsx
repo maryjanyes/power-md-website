@@ -39,7 +39,7 @@ export const ProductFilters = () => {
           currentRangeValue={fieldValue}
           onChange={(val: number[]) => {
             setTimeout(() => {
-              setProductRangeFilters(categoryFilter.name, {
+              setProductRangeFilters?.(categoryFilter.name, {
                 min: val[0],
                 max: val[1],
               });
@@ -63,9 +63,9 @@ export const ProductFilters = () => {
             value={fieldValue?.includes(value)}
             onCheckedChange={(isChecked: boolean) => {
               if (isChecked) {
-                setProductFilters(categoryFilter.name, [...fieldValue, value]);
+                setProductFilters?.(categoryFilter.name, [...fieldValue, value]);
               } else {
-                setProductFilters(categoryFilter.name, fieldValue.filter((fltValue: string) => value !== fltValue));
+                setProductFilters?.(categoryFilter.name, fieldValue.filter((fltValue: string) => value !== fltValue));
               }
             }}
           />
@@ -74,7 +74,7 @@ export const ProductFilters = () => {
     } else if (categoryFilter.type === "select") {
       return (
         <SelectComponent value={fieldValue} onValueChange={(value: string) => {
-          setProductFilters(categoryFilter.name, [...fieldValue, value]);
+          setProductFilters?.(categoryFilter.name, [...fieldValue, value]);
         }}>
           <SelectTriggerComponent className="w-24 sm:w-28 bg-secondary border-border font-mono text-sm">
             <SelectValueComponent placeholder={categoryFilter.title} />

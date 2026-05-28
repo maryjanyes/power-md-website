@@ -2,7 +2,6 @@
 
 import { useContext } from 'react';
 import { ShoppingCart, ArrowLeft, Zap, Shield, ThermometerSun, RefreshCw, Minus, Plus, Check } from 'lucide-react';
-import { toast } from 'sonner';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -20,11 +19,12 @@ const ButtonComponent: any = Button;
 
 export default function ProductDetailPage() {
   const { addCartItem, updateCardItemQuantity, cartItems } = useContext(CartContext);
-  const { productId } = useParams();
+  const { productId: productIdOrigin } = useParams();
+  const productId = Number(productIdOrigin);
   const { productById } = useProducts({
     productId: Number(productId),
   });
-  const cartItem = cartItems.find((item: any) => item.product_id === Number(productId));
+  const cartItem = cartItems.find((item: any) => item.product_id === productId);
   const cartItemAdded = !!cartItem;
 
   const handleAddProductToCart = () => {
@@ -149,22 +149,24 @@ export default function ProductDetailPage() {
             <p className="text-xs font-mono text-muted-foreground">{productById.capacity_ah} · {productById.voltage}V</p>
           </div>
           <div className="flex items-center gap-4 ml-auto">
-            <p className="text-xl font-heading font-bold text-primary">₴{productById.price * cartItem?.quantity}</p>
+            <p className="text-xl font-heading font-bold text-primary">₴{productById.price * (cartItem?.quantity || 1)}</p>
             <div className="flex items-center gap-1 bg-secondary rounded-lg">
               <button
                 onClick={() => {
-                  updateCardItemQuantity(productId, Math.max(1, cartItem?.quantity - 1));
+                  updateCardItemQuantity(productId, Math.max(1, (cartItem?.quantity || 1) - 1));
                 }}
                 className="p-2 hover:bg-accent rounded-l-lg transition-colors haptic-btn"
+                disabled={!cartItem}
               >
                 <Minus className="w-4 h-4" />
               </button>
-              <span className="w-8 text-center text-sm font-mono">{cartItem?.quantity}</span>
+              <span className="w-8 text-center text-sm font-mono">{(cartItem?.quantity || 1)}</span>
               <button
                 onClick={() => {
-                  updateCardItemQuantity(productId, cartItem?.quantity + 1);
+                  updateCardItemQuantity(productId, (cartItem?.quantity || 1) + 1);
                 }}
                 className="p-2 hover:bg-accent rounded-r-lg transition-colors haptic-btn"
+                disabled={!cartItem}
               >
                 <Plus className="w-4 h-4" />
               </button>
