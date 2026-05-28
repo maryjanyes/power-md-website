@@ -8,7 +8,7 @@ import Image from 'next/image';
 import { useProducts } from '@/lib/hooks/useProducts';
 import { SpecCard } from '@/lib/components/products/SpecCard';
 import { chemistryColors } from '@/lib/constants/colors';
-import { CartContext } from '@/lib/context/CartContext';
+import { CartContext, CartContextType } from '@/lib/context/CartContext';
 import { useParams } from 'next/navigation';
 import { Button } from "@/lib/components/ui/button";
 import { Badge } from "@/lib/components/ui/badge";
@@ -18,7 +18,7 @@ import ProductReviews from '@/lib/components/products/ProductReviews';
 const ButtonComponent: any = Button;
 
 export default function ProductDetailPage() {
-  const { addCartItem, updateCardItemQuantity, cartItems } = useContext(CartContext);
+  const { addCartItem, updateCardItemQuantity, cartItems } = useContext<CartContextType>(CartContext);
   const { productId: productIdOrigin } = useParams();
   const productId = Number(productIdOrigin);
   const { productById } = useProducts({
@@ -45,7 +45,7 @@ export default function ProductDetailPage() {
 
   if (!productById) {
     return (
-      <div className="min-h-screen pt-28 pb-20 flex items-center justify-center">
+        <div className="min-h-screen pt-28 pb-20 flex items-center justify-center">
           <div className="min-h-screen pt-28 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12">
             <Skeleton className="aspect-square rounded-2xl" />

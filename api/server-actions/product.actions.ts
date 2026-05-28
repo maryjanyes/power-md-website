@@ -108,10 +108,10 @@ export async function getProducts(query?: FiltersQuery) {
   return data;
 }
 
-export async function getProductDailyFavourites() {
-  const data = await prisma.productFav.findMany({
+export async function getProductsByVehicleModel(vehicleModel: string) {
+  const data = await prisma.productItemByVehicle.findMany({
     where: {
-      date: new Date(),
+      vehicle_model: vehicleModel,
     },
   });
 

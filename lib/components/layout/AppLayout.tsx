@@ -9,8 +9,8 @@ import Footer from "./Footer";
 import { CartProvider } from "@/lib/context/CartContext";
 import { CartOrderItem } from "@/lib/types/cart.types";
 import { defaultProductFilters, defaultProductRangeFilters, ProductFiltersQuery, ProductProvider, ProductRangeFiltersQuery } from "@/lib/context/ProductContext";
-import { ProductFav, ProductItem } from "@/db/generated/prisma/client";
-import { getProductDailyFavourites, getProductFeatured, getProducts } from "@/api/server-actions/product.actions";
+import { ProductItem } from "@/db/generated/prisma/client";
+import { getProductFeatured, getProducts } from "@/api/server-actions/product.actions";
 
 type Props = {
   children: React.ReactElement,
@@ -22,7 +22,6 @@ export const AppLayout = ({ children }: Props) => {
   const [cartItems, setCartItems] = useState<CartOrderItem[]>([]);
   const [rawProducts, setRawProducts] = useState<ProductItem[]>([]);
   const [productsFeatured, setProductsFeatured] = useState<number[]>([]);
-  const [productDailyFavourites, setProductDailyFavourites] = useState<ProductFav[]>([]);
   const [productFilters, setProductFilters] = useState<ProductFiltersQuery>(defaultProductFilters);
   const [productRangeFilters, setProductRangeFilters] = useState<ProductRangeFiltersQuery>(defaultProductRangeFilters);
 
@@ -41,12 +40,6 @@ export const AppLayout = ({ children }: Props) => {
     });
   }, [productRangeFilters, productFilters]);
 
-  const requestDailyFavs = () => {
-    getProductDailyFavourites().then((data) => {
-      setProductDailyFavourites(data);
-    });
-  };
-
   const injectScripts = () => {
     const script = document.createElement("script");
     script.src = "https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4";
@@ -60,7 +53,6 @@ export const AppLayout = ({ children }: Props) => {
   }
 
   useEffect(() => {
-    requestDailyFavs();
     requestFeaturedProducts();
 
     const unmount = injectScripts();
@@ -79,10 +71,10 @@ export const AppLayout = ({ children }: Props) => {
   return (
     <ProductProvider value={{
       rawProducts,
-      productDailyFavourites,
       productFilters,
       productRangeFilters,
       productsFeatured,
+      productDailyFavourites: [],
       isRawProductsLoadingInProgress,
       setProductRangeFilters: (name: string, value: number[] | string | any) => {
         setProductRangeFilters((prev: any) => ({

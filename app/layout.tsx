@@ -19,20 +19,18 @@ export const metadata: Metadata = {
   description: companyWebsiteMetaDescription,
 };
 
+const keywords = ["купити авто акумулятор київ", "купити акумулятор для авто", "акумулятор для авто, батареї", "авто аккумулятор agm", " авто аккумулятор gel", "авто акумулятор гарна ціна, дешево"];
 const metatags = {
   "og:title": "Акумулятори для авто, мотоциклів популярних виробників",
   "og:description": "Акумулятори для авто, мотоциклів популярних виробників (Bosch, Ista, Maxion, Forse, Oberon, Moll)",
-  "keywords": "акумулятори, батареї, авто товари, купити акумулятор для авто/мото, авто товари Україна",
+  "keywords": keywords.reduce((slice, keyword, keywordId) => keywordId === 0 ? slice : slice+=`,${keyword}`, ""),
   "description": "Акумулятори для авто, мотоциклів популярних виробників (Bosch, Ista, Maxion, Forse, Oberon, Moll)",
   "og:url": companyWebsiteDeployUrl,
   "og:locale": "ua",
+  "og:site_name": "Акумулятори від виробників, купити у дистрибютора PowerMB",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: any;
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: any }>) {
   return (
     <html
       lang="en"

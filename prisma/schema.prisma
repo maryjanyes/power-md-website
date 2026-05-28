@@ -54,13 +54,6 @@ model CartOrderItem {
   quantity     Int
 }
 
-model ProductFav {
-  id    Int     @id @default(autoincrement())
-  date      DateTime @default(now())
-  product_item_id     Int
-  product_item ProductItem     @relation(fields: [product_item_id], references: [id]) 
-}
-
 model ProductItemReview {
   id    Int     @id @default(autoincrement())
   content    String
@@ -89,12 +82,20 @@ model ProductItem {
   in_stock     Boolean     @default(true)
   cart_order_items     CartOrderItem[]
   product_items_featured     ProductItemFeatured[]
-  product_items_favs     ProductFav[]
   product_reviews     ProductItemReview[]
+  product_item_by_vehicle_model     ProductItemByVehicle[]
 }
 
 model ProductItemFeatured {
   id    Int     @id @default(autoincrement())
+  date      DateTime @default(now())
+  product_item_id     Int
+  product_item     ProductItem     @relation(fields: [product_item_id], references: [id]) 
+}
+
+model ProductItemByVehicle {
+  id    Int     @id @default(autoincrement())
+  vehicle_model     String
   product_item_id     Int
   product_item     ProductItem     @relation(fields: [product_item_id], references: [id]) 
 }

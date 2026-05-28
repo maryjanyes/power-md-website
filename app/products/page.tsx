@@ -7,6 +7,7 @@ import { ProductContext } from '@/lib/context/ProductContext';
 import { ProductFilters } from '@/lib/components/products/ProductFilters';
 import { ProductRow } from '@/lib/components/products/ProductRow';
 import { ProductSearch } from '@/lib/components/products/ProductSearch';
+import { SelectByAutoManifacturer } from '@/lib/components/products/SelectByAutoManifacturer';
 
 export default function ProductsPage() {
   const { category } = useParams();
@@ -50,6 +51,8 @@ export default function ProductsPage() {
           {category ? `категорія: ${category}` : ''} <span className="text-muted-foreground">Усі товари</span>
         </h1>
       </div>
+
+      <SelectByAutoManifacturer />
 
       <div className="flex flex-col sm:flex-row gap-3 mb-8 p-4 rounded-xl border border-border bg-card/40 backdrop-blur-sm">
         <ProductSearch />

@@ -4,13 +4,15 @@
 import { createContext } from "react";
 import { CartOrderItem } from "../types/cart.types";
 
-export const CartContext = createContext<{
+export type CartContextType = {
     cartItems: CartOrderItem[],
     addCartItem: (item: CartOrderItem) => void,
     removeCartItem: (itemId: number) => void,
     updateCardItemQuantity: (itemId: number, newQuantity: number) => void,
     clearCart: () => void,
-}>({
+};
+
+export const CartContext = createContext<CartContextType>({
     cartItems: [],
     addCartItem: (_: CartOrderItem) => {},
     clearCart: () => {},
