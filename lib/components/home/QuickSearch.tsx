@@ -5,7 +5,6 @@ import { Button } from '@/lib/components/ui/button';
 import { productTypeCategories } from "@/lib/constants/categories";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-// @ts-expect-error Framer package exists.
 import { motion } from 'framer-motion';
 
 const ButtonComponent: any = Button;

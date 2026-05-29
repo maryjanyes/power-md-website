@@ -1,6 +1,5 @@
 'use client';
 
-// @ts-expect-error Framer package exists.
 import { motion } from 'framer-motion';
 import { ShoppingCart, ArrowRight, Zap } from 'lucide-react';
 import { toast } from 'sonner';

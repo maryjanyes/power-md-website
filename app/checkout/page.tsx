@@ -8,7 +8,6 @@ import { Label } from "@/lib/components/ui/label";
 import { Textarea } from "@/lib/components/ui/textarea";
 import { Checkbox } from "@/lib/components/ui/checkbox";
 import { ArrowLeft, ArrowRight, Package, CreditCard, Check, Loader2, Zap } from "lucide-react";
-// @ts-expect-error Framer package exists.
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 import { createNewCartOrder } from "@/api/server-actions/cart.actions";

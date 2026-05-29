@@ -2,7 +2,6 @@
 
 import { useContext } from 'react';
 import { ShoppingCart, ArrowLeft, Zap, Shield, ThermometerSun, RefreshCw, Minus, Plus, Check } from 'lucide-react';
-// @ts-expect-error Framer package exists.
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';

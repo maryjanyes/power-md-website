@@ -1,4 +1,3 @@
-// @ts-expect-error Framer package exists.
 import { motion } from 'framer-motion';
 import { useProductReviews } from "@/lib/hooks/useProductReviews";
 

@@ -1,7 +1,6 @@
 'use client';
 
 import Image from 'next/image';
-// @ts-expect-error Framer package exists.
 import { motion } from 'framer-motion';
 import FeaturedProducts from './FeaturedProducts';
 

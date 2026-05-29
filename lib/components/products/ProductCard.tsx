@@ -3,7 +3,6 @@ import { ProductItem } from '@/db/generated/prisma/client';
 import { Button } from "@/lib/components/ui/button";
 import { ShoppingCart } from 'lucide-react';
 import { CartContext } from '@/lib/context/CartContext';
-// @ts-expect-error Framer package exists.
 import { motion } from 'framer-motion';
 import { useContext } from 'react';
 import { toast } from 'sonner';
