@@ -51,7 +51,7 @@ export async function createNewCartOrder(cartOrderPayload: CartOrderPayload, exi
   });
   const transport = getTransportInstance();
   const emailParams = {
-    from: `"Power.UKR" <power_ukr.support@gmail.com>`,
+    from: `"Power.MD" <power_ukr.support@gmail.com>`,
     to: shippingContactInfo.email,
     subject: `Нове замовлення #${newCartOrder.id}`,
     html: `
@@ -67,7 +67,7 @@ export async function createNewCartOrder(cartOrderPayload: CartOrderPayload, exi
     `
   };
   const notifyManagerEmailParams = {
-    from: `"Power.UKR" <power_ukr.support@gmail.com>`,
+    from: `"Power.MD" <power_ukr.support@gmail.com>`,
     to: "maryjanyes@gmail.com",
     subject: `Нове замовлення #${newCartOrder.id}`,
     html: `

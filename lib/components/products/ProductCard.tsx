@@ -37,9 +37,9 @@ export const ProductCard = ({ ...productItem }: Props) => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.5 }}
-            className="md:p-8 rounded-xl border border-border bg-card/60 backdrop-blur-sm w-[100%] md:w-[49%]!"
+            className="md:p-8 rounded-xl border border-border bg-card/60 backdrop-blur-sm p-4 w-[100%] md:w-[49%]!"
         >
-            <div className="flex flex-row gap-1">
+            <div className="flex flex-row gap-3">
                 <Link href={`/product-detail/${productItem.id}`} className="w-[50%]">
                     <p className="text-xl font-mono font-bold text-muted-foreground mb-2">{productItem.name}</p>
                     <div className="flex flex-col sm:flex-row gap-3">
@@ -86,7 +86,7 @@ export const ProductCard = ({ ...productItem }: Props) => {
                             onClick={handleAddItem}
                             className="bg-secondary hover:bg-primary hover:text-primary-foreground text-foreground h-9 w-9 p-0 haptic-btn transition-colors cursor-pointer"
                         >
-                        <ShoppingCart className="w-4 h-4" />
+                            <ShoppingCart className="md:w-8 md:h-8 w-6 h-6" />
                         </ButtonComponent>
                     )}
                 </div>

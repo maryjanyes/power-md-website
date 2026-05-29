@@ -44,7 +44,7 @@ export default function Footer() {
             <div>
               <h4 className="font-heading font-semibold text-sm tracking-wider mb-4 text-foreground">КОНТАКТИ</h4>
               <div className="space-y-2 text-sm font-mono text-muted-foreground">
-                <p>power.ukr100@gmail.com</p>
+                <p>Power.MD100@gmail.com</p>
                 <p>+380633002011</p>
               </div>
             </div>
@@ -53,7 +53,7 @@ export default function Footer() {
 
         <div className="mt-12 pt-8 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs font-mono text-muted-foreground">
-            © 2026 Power.UKR. УСІ ПРАВА ЗАХИЩЕНІ.
+            © 2026 Power.MD. УСІ ПРАВА ЗАХИЩЕНІ.
           </p>
           <p className="text-xs font-mono text-muted-foreground/50">
             ВЕРСІЯ v2.4.0
