@@ -1,4 +1,5 @@
 import { useContext, useState } from "react";
+// @ts-expect-error Framer package exists.
 import { motion } from 'framer-motion';
 import { getProductsByVehicleModel } from "@/api/server-actions/product.actions";
 import { ProductItem } from "@/db/generated/prisma/client";

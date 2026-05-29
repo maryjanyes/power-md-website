@@ -2,6 +2,7 @@
 
 import { useContext } from 'react';
 import { ShoppingCart, ArrowLeft, Zap, Shield, ThermometerSun, RefreshCw, Minus, Plus, Check } from 'lucide-react';
+// @ts-expect-error Framer package exists.
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -69,17 +70,17 @@ export default function ProductDetailPage() {
 
   return (
     <div className="min-h-screen pt-24 sm:pt-28 pb-32">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto px-4 sm:px-6 lg:px-8">
         <Link href="/products" className="inline-flex items-center gap-2 text-xs font-mono text-muted-foreground hover:text-primary transition-colors mb-8">
           <ArrowLeft className="w-3.5 h-3.5" />
           Каталог
         </Link>
 
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-16">
+        <div className="grid lg:grid-cols-2 lg:gap-16 pr-10">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="relative aspect-square rounded-2xl overflow-hidden bg-card border border-border"
+            className="relative aspect-square rounded-3xl overflow-hidden bg-card border border-border w-[280px]"
           >
             {productById.image_url ? (
               <Image

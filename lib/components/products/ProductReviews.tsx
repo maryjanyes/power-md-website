@@ -1,3 +1,4 @@
+// @ts-expect-error Framer package exists.
 import { motion } from 'framer-motion';
 import { useProductReviews } from "@/lib/hooks/useProductReviews";
 
@@ -7,7 +8,7 @@ export default function ProductReviews({ productId }: Props) {
     const reviewsByProductId = useProductReviews({ productId });
 
     return (
-        <div className="flex flex-col gap-2 mt-12">
+        <div className="flex flex-col gap-2 mt-12 max-w-[50%]">
             <p className="text-xl font-semibold mb-4">Відгуки</p>
             {reviewsByProductId.map((review) => (
                 <motion.div

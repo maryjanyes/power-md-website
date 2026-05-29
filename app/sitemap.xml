@@ -3,18 +3,18 @@
     <loc>https://power-md.co.ua/products/GEL</loc>
     <lastmod>2026-05-28T10:00:00.021Z</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>1</priority>
+    <priority>0.4</priority>
   </url>
    <url>
     <loc>https://power-md.co.ua/products/AGM</loc>
     <lastmod>2026-05-28T10:00:00.021Z</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>1</priority>
+    <priority>0.5</priority>
   </url>
    <url>
     <loc>https://power-md.co.ua/products</loc>
     <lastmod>2026-05-28T10:00:00.021Z</lastmod>
     <changefreq>daily</changefreq>
-    <priority>2</priority>
+    <priority>0.9</priority>
   </url>
 </urlset>

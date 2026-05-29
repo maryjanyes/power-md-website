@@ -2,6 +2,7 @@
 
 import { useState, useContext, useEffect, useCallback } from 'react';
 import { ShoppingCart, Zap } from 'lucide-react';
+// @ts-expect-error Framer package exists.
 import { motion } from 'framer-motion';
 import { CartContext } from '@/lib/context/CartContext';
 import Link from 'next/link';
