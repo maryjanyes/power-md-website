@@ -6,12 +6,5 @@ Disallow: /db
 Disallow: /prisma
 Disallow: /lib
 
-# Prevent specific AI bots from scraping your content
-User-agent: GPTBot
-Disallow: /
-
-User-agent: ChatGPT-User
-Disallow: /
-
 # Sitemap location to help search engines index your site
 Sitemap: https://power-md.co.ua/sitemap.xml

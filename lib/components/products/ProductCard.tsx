@@ -1,7 +1,7 @@
 import { productCardItemPlaceholders, productCardSubFields, productCardTitleFields } from '@/lib/constants/product';
 import { ProductItem } from '@/db/generated/prisma/client';
 import { Button } from "@/lib/components/ui/button";
-import { ShoppingCart } from 'lucide-react';
+import { ShoppingCart, Zap } from 'lucide-react';
 import { CartContext } from '@/lib/context/CartContext';
 import { motion } from 'framer-motion';
 import { useContext } from 'react';
@@ -72,14 +72,20 @@ export const ProductCard = ({ ...productItem }: Props) => {
                     </div>
                 </Link>
                 <div className="w-[49%] flex flex-col gap-4 items-end">
-                    <Image
-                        src={productItem.image_url!}
-                        alt={productItem.name}
-                        title={productItem.name}
-                        width={100}
-                        height={100}
-                        className="w-full h-full object-cover"
-                    />
+                    {productItem?.image_url ? (
+                        <Image
+                            src={productItem.image_url!}
+                            alt={productItem.name}
+                            title={productItem.name}
+                            width={100}
+                            height={100}
+                            className="w-full h-full object-contain"
+                        />
+                    ): (
+                        <div className="w-full h-full flex items-center justify-center">
+                            <Zap className="w-6 h-6 text-muted-foreground/30" />
+                        </div>
+                    )}
                     {productItem.in_stock && (
                         <ButtonComponent
                             size="sm"
